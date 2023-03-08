@@ -1,7 +1,7 @@
 import csv
 import uuid
 from qrcode_generator import create_qrcode
-from qrcode_reader import read_qrcode
+from qrcode_reader import read_qrcode_from_path
 
 
 def csv_reader():
@@ -25,4 +25,4 @@ def csv_reader():
 
 if __name__ == '__main__':
     csv_reader()
-    read_qrcode()
+    read_qrcode_from_path()

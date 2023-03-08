@@ -1,5 +1,14 @@
 import qrcode
 from os import path
+from PIL import Image
+
+
+def resize_QRcode(file_path, file_name):
+    image = Image.open(file_path)
+    image.thumbnail((100, 100))
+    file_name = f"{file_name}_resized.png"
+    file_path = path.join('../QRCode/resized', file_name)
+    image.save(file_path)
 
 
 def create_qrcode(data):
@@ -10,6 +19,7 @@ def create_qrcode(data):
     file_name = f"{data['id']}.png"
     file_path = path.join('../QRCode', file_name)
     img.save(file_path)
+    resize_QRcode(file_path, data['id'])
 
 
 if __name__ == '__main__':
@@ -21,5 +31,3 @@ if __name__ == '__main__':
         'isBorrower': False
     }
     create_qrcode(data)
-    qr_data = read_qrcode()
-
