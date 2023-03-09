@@ -34,7 +34,7 @@ def read_qrcode_from_webcam():
                 cv2.line(frame, point1, point2, color=(0,255,0), thickness=2)
 
             cv2.imshow('QRcode', frame)
-            not done_detection
+            done_detection = not done_detection
 
     cv2.waitKey(0)
     capture.release()

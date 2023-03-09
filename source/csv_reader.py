@@ -1,28 +1,31 @@
 import csv
+from os import path, makedirs
 import uuid
 from qrcode_generator import create_qrcode
 from qrcode_reader import read_qrcode_from_path
 
 
-def csv_reader():
-    with open('../CSV/booking.csv') as booking:
-        reader = csv.reader(booking)
+def csv_Student_reader(filename):
+    filepath = path.join('../CSV', filename)
+    makedirs(path.join('../QRCode', 'school'), exist_ok=True)
+    with open(filepath) as file:
+        csv_data = csv.reader(file)
         line_count = 0
-        for row in reader:
+        for row in csv_data:
             if line_count:
-                data = {
+                student = {
                     "id": str(uuid.uuid4()),
                     "email": row[0],
                     "first_name": row[1],
                     "last_name": row[2],
                     "preferred_name": row[3],
-                    "role": row[4],
-                    "is_borrowed": False
+                    "role": row[4]
                 }
-                create_qrcode(data)
-            line_count += 1
+                create_qrcode(student, student['id'], 'school')
+            else:
+                line_count += 1
 
 
 if __name__ == '__main__':
-    csv_reader()
+    csv_Student_reader('booking.csv')
     read_qrcode_from_path()
