@@ -5,7 +5,7 @@ from qrcode_generator import create_qrcode
 from qrcode_reader import read_qrcode_from_path
 
 
-def csv_Student_reader(filename):
+def csv_student_reader(filename: str) -> None:
     filepath = path.join('../CSV', filename)
     makedirs(path.join('../QRCode', 'school'), exist_ok=True)
     with open(filepath) as file:
@@ -27,5 +27,5 @@ def csv_Student_reader(filename):
 
 
 if __name__ == '__main__':
-    csv_Student_reader('booking.csv')
-    read_qrcode_from_path()
+    csv_student_reader('booking.csv')
+    read_qrcode_from_path('school')  # 'device'
