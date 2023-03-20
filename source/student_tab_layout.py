@@ -19,7 +19,7 @@ def borrow_and_return_page_layout():
     ]
 
     student_device_return_layout = [
-        [sg.Push(), sg.Image(size=(300, 300), key='-qrcode2-'), sg.Push()],
+        [sg.Push(), sg.Image(size=(300, 300), key='-qrcode2-', data=image_data), sg.Push()],
         [sg.Push(), sg.Button(button_text='Scan item QRcode to return', size=30, font=font, key='-device_return-'), sg.Push()]
     ]
 

@@ -2,7 +2,7 @@ from qrcode_reader import read_qrcode_from_webcam
 from config import *
 
 
-def borrow_item() -> None:
+def borrow_item(device_data, student_id) -> None:
     """ This function triggers when a student borrow a device. It gets the student_id and device_data and stores the
     information in the firebase database
 
@@ -11,8 +11,8 @@ def borrow_item() -> None:
     # try:
     #     # student_id = scan_student_qrcode()
     #     # device_data = scan_device_qrcode()
-    #     # db.child('devices').child(device_data['id']).update({'borrowed_by': student_id})
-    #     # db.child('borrowed_devices').child(device_data['id']).set({'student_id': student_id})
+    db.child('devices').child(device_data['id']).update({'borrowed_by': student_id})
+    db.child('borrowed_devices').child(device_data['id']).set({'student_id': student_id})
     #     print('Successful')
     # except:
     #     print('Unsuccessful')
@@ -20,20 +20,20 @@ def borrow_item() -> None:
     #     print('Return to the main window')
 
     # testing code. Remove those
-    db.child('devices').child('-NQngEuLM4ulrcaFuzF_').update({'borrowed_by': 'Student 1'})
-    db.child('borrowed_devices').child('Student 1').set({'device_id': '-NQngEuLM4ulrcaFuzF_'})
-
-    db.child('devices').child('-NQngF1p-TzSDjctZLj-').update({'borrowed_by': 'Student 2'})
-    db.child('borrowed_devices').child('Student 2').set({'device_id': '-NQngF1p-TzSDjctZLj-'})
-
-    db.child('devices').child('-NQngFBgNFyDZ-WCQuDj').update({'borrowed_by': 'Student 3'})
-    db.child('borrowed_devices').child('Student 3').set({'device_id': '-NQngFBgNFyDZ-WCQuDj'})
-
-    db.child('devices').child('-NQngFL_vJQIUceT1FUR').update({'borrowed_by': 'Student 4'})
-    db.child('borrowed_devices').child('Student 4').set({'device_id': '-NQngFL_vJQIUceT1FUR'})
-
-    db.child('devices').child('-NQngFVPS6wWhw67EsD5').update({'borrowed_by': 'Student 5'})
-    db.child('borrowed_devices').child('Student 5').set({'device_id': '-NQngFVPS6wWhw67EsD5'})
+    # db.child('devices').child('-NQngEuLM4ulrcaFuzF_').update({'borrowed_by': 'Student 1'})
+    # db.child('borrowed_devices').child('Student 1').set({'device_id': '-NQngEuLM4ulrcaFuzF_'})
+    #
+    # db.child('devices').child('-NQngF1p-TzSDjctZLj-').update({'borrowed_by': 'Student 2'})
+    # db.child('borrowed_devices').child('Student 2').set({'device_id': '-NQngF1p-TzSDjctZLj-'})
+    #
+    # db.child('devices').child('-NQngFBgNFyDZ-WCQuDj').update({'borrowed_by': 'Student 3'})
+    # db.child('borrowed_devices').child('Student 3').set({'device_id': '-NQngFBgNFyDZ-WCQuDj'})
+    #
+    # db.child('devices').child('-NQngFL_vJQIUceT1FUR').update({'borrowed_by': 'Student 4'})
+    # db.child('borrowed_devices').child('Student 4').set({'device_id': '-NQngFL_vJQIUceT1FUR'})
+    #
+    # db.child('devices').child('-NQngFVPS6wWhw67EsD5').update({'borrowed_by': 'Student 5'})
+    # db.child('borrowed_devices').child('Student 5').set({'device_id': '-NQngFVPS6wWhw67EsD5'})
     # db.child('borrowed_devices').child('siffat').update({'device_id': '-MQIdTRxxoBs0bun9Yrq'})
 
 
@@ -54,7 +54,7 @@ def borrowed_devices_list():
 
         borrowed_device_table_data = []
         for key, value in devices_list.items():
-            borrowed_device_table_data.append([key, value['device_id']])
+            borrowed_device_table_data.append([key, value['student_id']])
 
         return borrowed_device_table_data
     else:
