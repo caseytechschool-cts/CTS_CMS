@@ -1,7 +1,11 @@
+import ast
 import os
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
-import numpy as np
+from borrow_device import borrow_item
+from return_device import return_item
+
+image_data = 'iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAC+UlEQVR42u3UQREAAAjDMFCO9KEDLpHQR7uSKYAD2rAAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMCzAswwIMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAswLAMCzAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAAwzIswLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIMSwbAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIMC8CwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAMMyLMCwAAwLMCwAwwIwLMCwAAwLwLAAwwIwLADDAgwLwLAADAswLADDAjAswLAADAvAsADDAjAsAMMCDAvAsAAMCzAsAMMCDMuwAMMCMCzAsAAMC8CwAMMCMCwAwwIMC8CwAAwL+GwB2Mfrx/xgE7oAAAAASUVORK5CYII='
 
 
 def read_qrcode_from_path(sub_path: str) -> dict:
@@ -20,36 +24,103 @@ def read_qrcode_from_path(sub_path: str) -> dict:
         # return data
 
 
-def read_qrcode_from_webcam() -> dict:
+def read_student_qrcode_from_webcam(window) -> dict:
+    recording = True
+    stop_recording = False
     camera_id = 1
-    capture = cv2.VideoCapture(camera_id)
+    capture = cv2.VideoCapture(camera_id)  # , cv2.CAP_DSHOW
     detector = cv2.QRCodeDetector()
-    done_detection = False
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 300)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 300)
-    while not done_detection:
-        ret, frame = capture.read()
-        cv2.imshow('QRcode',  frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-        qr_data, bbox, straight_qrcode = detector.detectAndDecode(frame)
-        print(qr_data)
-        # print(bbox)
+    print(capture.isOpened())
+    if capture.isOpened():
+        while recording:
+            ret, frame = capture.read()
+            qr_data, bbox, straight_qrcode = detector.detectAndDecode(frame)
+            window['-qrcode1-'].update(data=cv2.imencode('.png', frame)[1].tobytes())
+            window.refresh()
+
+            if qr_data:
+                qr_data = ast.literal_eval(qr_data)
+                recording = False
+                stop_recording = True
+    else:
+        recording = False
+        window['-student-id-scan-msg-'].update(value='Camera is not available.')
+
+    if stop_recording:
+        capture.release()
+        stop_recording = False
+        recording = False
+        window['-qrcode1-'].update(data=image_data)
+        window['-col_borrow_student_id-'].update(visible=False)
+        window['-col_borrow_device_id-'].update(visible=True)
         if qr_data:
-            # num_lines = len(bbox)
-            # for i in range(num_lines):
-            #     point1 = tuple(bbox[i][0])
-            #     point2 = tuple(bbox[(i + 1) % num_lines][0])
-            #     cv2.line(frame, point1, point2, color=(0, 255, 0), thickness=2)
-
-            cv2.imshow('QRcode', frame)
-            done_detection = not done_detection
-
-    capture.release()
-    cv2.destroyAllWindows()
-
-    return qr_data
+            return qr_data
+    return None
 
 
-if __name__ == '__main__':
-    print(read_qrcode_from_webcam())
+def read_device_qrcode_from_webcam(window, student_qr_code):
+    recording = True
+    stop_recording = False
+    camera_id = 1
+    capture = cv2.VideoCapture(camera_id)  # , cv2.CAP_DSHOW
+    detector = cv2.QRCodeDetector()
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 300)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 300)
+
+    while recording:
+        ret, frame = capture.read()
+        qr_data, bbox, straight_qrcode = detector.detectAndDecode(frame)
+        window['-qrcode1-'].update(data=cv2.imencode('.png', frame)[1].tobytes())
+        window.refresh()
+
+        if qr_data:
+            print(qr_data)
+            device_data = ast.literal_eval(qr_data)
+            recording = False
+            stop_recording = True
+
+    if stop_recording:
+        capture.release()
+        stop_recording = False
+        recording = False
+        borrow_item(device_data=device_data, student_id=student_qr_code['id'])
+        window['-qrcode1-'].update(data=image_data)
+        window['-student_main_screen-'].update(visible=True)
+        window['-student_device_return_screen-'].update(visible=False)
+        window['-student_borrow_screen-'].update(visible=False)
+
+
+def return_device_qrcode_webcam(window):
+    recording = True
+    stop_recording = False
+    camera_id = 1
+    capture = cv2.VideoCapture(camera_id)  # , cv2.CAP_DSHOW
+    detector = cv2.QRCodeDetector()
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 300)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 300)
+
+    while recording:
+        ret, frame = capture.read()
+        qr_data, bbox, straight_qrcode = detector.detectAndDecode(frame)
+        window['-qrcode2-'].update(data=cv2.imencode('.png', frame)[1].tobytes())
+        window.refresh()
+
+        if qr_data:
+            print(qr_data)
+            device_data = ast.literal_eval(qr_data)
+            recording = False
+            stop_recording = True
+
+    if stop_recording:
+        capture.release()
+        stop_recording = False
+        recording = False
+        if device_data:
+            return_item(device_data)
+        window['-qrcode2-'].update(data=image_data)
+        window['-student_main_screen-'].update(visible=True)
+        window['-student_device_return_screen-'].update(visible=False)
+        window['-student_borrow_screen-'].update(visible=False)
+

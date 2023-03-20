@@ -8,17 +8,18 @@ def borrow_and_return_page_layout():
         [sg.Push(), sg.Button(button_text='Borrow Item', key='-borrow_item-', font=font, size=20), sg.Push()],
         [sg.Push(), sg.Button(button_text='Return Item', key='-return_item-', font=font, size=20), sg.Push()]
     ]
-
     scan_student_qr_code = [[sg.Button(button_text='Scan student QRcode', size=20, font=font, key='-borrow_student_id-')]]
     scan_item_qr_code = [[sg.Button(button_text='Scan item QRcode', size=20, font=font, key='-borrow_device_id-')]]
 
     student_borrow_screen_layout = [
+        [sg.Push(), sg.Text(text="", key='-student-id-scan-msg-'), sg.Push()],
         [sg.Push(), sg.Image(size=(300, 300), key='-qrcode1-', data=image_data), sg.Push()],
         [sg.Column(scan_student_qr_code, key='-col_borrow_student_id-', visible=True),
          sg.Column(scan_item_qr_code, key='-col_borrow_device_id-', visible=False)]
     ]
 
     student_device_return_layout = [
+        [sg.Push(), sg.Text(text="", key='-device-return-msg-'), sg.Push()],
         [sg.Push(), sg.Image(size=(300, 300), key='-qrcode2-', data=image_data), sg.Push()],
         [sg.Push(), sg.Button(button_text='Scan item QRcode to return', size=30, font=font, key='-device_return-'), sg.Push()]
     ]

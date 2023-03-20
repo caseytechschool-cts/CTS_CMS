@@ -1,4 +1,3 @@
-from qrcode_reader import read_qrcode_from_webcam
 from config import *
 
 
@@ -35,16 +34,6 @@ def borrow_item(device_data, student_id) -> None:
     # db.child('devices').child('-NQngFVPS6wWhw67EsD5').update({'borrowed_by': 'Student 5'})
     # db.child('borrowed_devices').child('Student 5').set({'device_id': '-NQngFVPS6wWhw67EsD5'})
     # db.child('borrowed_devices').child('siffat').update({'device_id': '-MQIdTRxxoBs0bun9Yrq'})
-
-
-def scan_student_qrcode() -> str:
-    student_qr_data = read_qrcode_from_webcam()
-    return student_qr_data['id']
-
-
-def scan_device_qrcode() -> dict:
-    device_qr_data = read_qrcode_from_webcam()
-    return device_qr_data
 
 
 def borrowed_devices_list():
