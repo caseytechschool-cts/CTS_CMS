@@ -49,13 +49,16 @@ def scan_device_qrcode() -> dict:
 
 def borrowed_devices_list():
     devices_list = db.child('borrowed_devices').get().val()
-    devices_list = dict(devices_list)
+    if devices_list:
+        devices_list = dict(devices_list)
 
-    borrowed_device_table_data = []
-    for key, value in devices_list.items():
-        borrowed_device_table_data.append([key, value['device_id']])
+        borrowed_device_table_data = []
+        for key, value in devices_list.items():
+            borrowed_device_table_data.append([key, value['device_id']])
 
-    return borrowed_device_table_data
+        return borrowed_device_table_data
+    else:
+        return [[]]
 
 
 if __name__ == '__main__':

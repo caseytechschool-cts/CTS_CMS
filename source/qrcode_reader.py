@@ -1,5 +1,7 @@
-import cv2
 import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+import cv2
+import numpy as np
 
 
 def read_qrcode_from_path(sub_path: str) -> dict:
@@ -23,21 +25,31 @@ def read_qrcode_from_webcam() -> dict:
     capture = cv2.VideoCapture(camera_id)
     detector = cv2.QRCodeDetector()
     done_detection = False
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 300)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 300)
     while not done_detection:
         ret, frame = capture.read()
+        cv2.imshow('QRcode',  frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
         qr_data, bbox, straight_qrcode = detector.detectAndDecode(frame)
-        if bbox is not None:
-            num_lines = len(bbox)
-            for i in range(num_lines):
-                point1 = tuple(bbox[i][0])
-                point2 = tuple(bbox[(i + 1) % num_lines][0])
-                cv2.line(frame, point1, point2, color=(0, 255, 0), thickness=2)
+        print(qr_data)
+        # print(bbox)
+        if qr_data:
+            # num_lines = len(bbox)
+            # for i in range(num_lines):
+            #     point1 = tuple(bbox[i][0])
+            #     point2 = tuple(bbox[(i + 1) % num_lines][0])
+            #     cv2.line(frame, point1, point2, color=(0, 255, 0), thickness=2)
 
             cv2.imshow('QRcode', frame)
             done_detection = not done_detection
 
-    cv2.waitKey(0)
     capture.release()
     cv2.destroyAllWindows()
 
     return qr_data
+
+
+if __name__ == '__main__':
+    print(read_qrcode_from_webcam())
