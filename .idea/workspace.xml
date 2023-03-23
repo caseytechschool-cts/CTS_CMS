@@ -5,15 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02ec80b-0de1-42cd-aef8-70d7a3e824cf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CTS_CMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CTS_CMS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/borrow_device.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/borrow_device.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/gui_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/gui_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/qrcode_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/qrcode_reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/return_device.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/return_device.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/student_tab_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/student_tab_layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/CURD.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/CURD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/auth.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/auth.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/base64image.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper_lib/base64image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/borrow_device.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/borrow_device.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/borrowed_devices_list_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/borrowed_devices_list_layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/csv_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/csv_files/csv_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/firebase_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/firebase_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/gui_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/gui_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/manage_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/manage_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/pathmaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper_lib/pathmaker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/pyguitest.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/pyguitest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/qrcode_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/qr_code/qrcode_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/qrcode_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/qr_code/qrcode_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/return_device.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/return_device.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/student_tab_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_tab_layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/theme.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/theme.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,13 +63,15 @@
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\source" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\CSV" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\helper_lib" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\firebase" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\gui" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\csv_files" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\qr_code" />
     </key>
   </component>
   <component name="RunManager" selected="Python.gui_test">
-    <configuration name="borrow_device" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="CURD" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CTS_CMS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -71,7 +83,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/borrow_device.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\firebase\CURD.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -92,28 +104,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/csv_reader.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="firebase_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="CTS_CMS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/firebase_test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\csv_files\csv_reader.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -134,7 +125,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/gui_test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\gui\gui_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -155,7 +146,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/qrcode_reader.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\qr_code\qrcode_reader.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="show_device_list" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CTS_CMS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/source" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\gui\show_device_list.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -167,10 +179,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.gui_test" />
+        <item itemvalue="Python.CURD" />
+        <item itemvalue="Python.show_device_list" />
         <item itemvalue="Python.csv_reader" />
         <item itemvalue="Python.qrcode_reader" />
-        <item itemvalue="Python.borrow_device" />
-        <item itemvalue="Python.firebase_test" />
       </list>
     </recent_temporary>
   </component>
