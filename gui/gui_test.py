@@ -1,4 +1,6 @@
 import PySimpleGUI as sg
+
+from gui.main import show_login_screen
 from student_tab_layout import borrow_and_return_page_layout
 from borrowed_devices_list_layout import borrowed_devices_tab_layout
 from helper_lib.base64image import image_to_base64
@@ -25,7 +27,7 @@ def main():
                        finalize=True)
 
     while True:
-        event, values = window.read()
+        event, values = window.read(timeout=100)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         print(event)
@@ -56,6 +58,8 @@ def main():
             sg.popup_notify(title='Device return is successful')
         if event == 'Show device list':
             show_device_list_window()
+        if event == 'Show faulty device list':
+            show_login_screen()
 
 
 if __name__ == '__main__':
