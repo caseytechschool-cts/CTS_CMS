@@ -2,3 +2,5 @@ firebase/config.py
 security/key.key
 security/uname
 security/pword
+security/auth.json
+demo

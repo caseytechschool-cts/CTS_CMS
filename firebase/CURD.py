@@ -40,11 +40,10 @@ def device_list():
     all_devices = db.child("devices").get().val()
     if all_devices:
         all_devices = dict(all_devices)
-        print(all_devices)
         all_devices_list = []
         for key, val in all_devices.items():
             val = dict(val)
-            single_device = []
+            single_device = [key]
             for item_key, item_val in val.items():
                 single_device.append(item_val)
             all_devices_list.append(single_device)
@@ -71,21 +70,26 @@ def update_device(user):
 
 
 def user_log_in(email: str, password: str) -> None:
+    user, msg = None, "successful"
     try:
         user = auth.sign_in_with_email_and_password(email, password)
-        print(user)
-        with open("auth.json", "w") as outfile:
+        # print(user)
+        with open(path.join('../security', "auth.json"), "w") as outfile:
             json.dump(user, outfile)
 
     except requests.exceptions.HTTPError as error:
-        print('Invalid email or password')
+        # print('Invalid email or password')
+        msg = 'Invalid email or password'
     except requests.exceptions.ConnectionError as error:
-        print('Network problem')
+        # print('Network problem')
+        msg = 'Network problem'
     except requests.exceptions.Timeout as error:
-        print('Request times out')
+        # print('Request times out')
+        msg = 'Request times out'
+    return user, msg
 
     # user = auth.refresh(user['refreshToken'])
     # print(user)
 
 if __name__ == '__main__':
-    add_device_to_database('devices.csv')
+    device_list()

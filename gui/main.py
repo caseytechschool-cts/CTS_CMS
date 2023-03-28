@@ -1,3 +1,5 @@
+import json
+
 import PySimpleGUI as sg
 import login_screen_layout
 from helper_lib.base64image import image_to_base64
@@ -5,6 +7,9 @@ from security import generate_key
 from pathlib import Path
 from cryptography.fernet import Fernet
 import os
+from firebase import user_log_in
+from firebase.manage_user import password_reset, create_user
+from gui import show_device_list
 
 
 def show_main_screen():
@@ -16,6 +21,7 @@ def show_main_screen():
     else:
         key = generate_key.key_generation()
     f = Fernet(key)
+
     window_login_in = sg.Window(title="Login screen",
                                 layout=login_screen_layout.layout_mixer_auth(f),
                                 size=(800, 600),
@@ -24,8 +30,10 @@ def show_main_screen():
                                 alpha_channel=1.0,
                                 finalize=True)
 
+    window_login_in['-reset-password-username-'].bind('<Return>', '_Enter')
+    window_login_in['-password-'].bind('<Return>', '_Enter')
     while True:
-        event, values = window_login_in.read(timeout=100)
+        event, values = window_login_in.read()
         print(event)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
@@ -34,7 +42,7 @@ def show_main_screen():
             window_login_in['-password-'].update(password_char='')
         else:
             window_login_in['-password-'].update(password_char='*')
-        if event == '-sign-in-':
+        if event == '-sign-in-' or event == '-password-' + '_Enter':
             if values['-remember-me-']:
                 with open('../security/uname', 'wb') as username:
                     user_name = f.encrypt(bytes(values['-username-'], encoding='utf8'))
@@ -47,14 +55,49 @@ def show_main_screen():
                     os.remove(os.path.join('../security', 'uname'))
                 if os.path.exists(os.path.join('../security', 'pword')):
                     os.remove(os.path.join('../security', 'pword'))
+            if os.path.exists(os.path.join('../security', 'auth.json')):
+                user = json.load(open(os.path.join('../security', 'auth.json'),))
+            else:
+                user, msg = user_log_in.log_in(values['-username-'], values['-password-'])
+            if user is None:
+                window_login_in['-login-error-'].update(visible=True, value=msg)
+            else:
+                window_login_in['-login-error-'].update(visible=False, value='')
+                window_login_in.close()
+                show_device_list.show_device_list_window()
         if event == '-sign-up-':
             window_login_in['-login-screen-'].update(visible=False)
             window_login_in['-signup-screen-'].update(visible=True)
             window_login_in.set_title('Sign up page')
-        if event == '-sign-up-now':
+        if event == '-sign-up-now-':
+            create_user(values['-username-signup-'], values['-password-signup-'])
+            print('done')
             window_login_in['-login-screen-'].update(visible=True)
             window_login_in['-signup-screen-'].update(visible=False)
+
             window_login_in.set_title('Login page')
+        if event == '-forgot-':
+            window_login_in['-login-screen-'].update(visible=False)
+            window_login_in['-signup-screen-'].update(visible=False)
+            window_login_in['-reset-screen-'].update(visible=True)
+            window_login_in.set_title('Reset password page')
+        if event == '-reset-password-' or event == '-reset-password-username-' + '_Enter':
+            reset_status = password_reset(values['-reset-password-username-'])
+            if reset_status:
+                window_login_in['-reset-error-'].update(value=reset_status, visible=True)
+            else:
+                window_login_in['-reset-error-'].update(value="", visible=False)
+                window_login_in['-reset-msg-'].update(visible=True)
+                window_login_in['-login-redirect-'].update(visible=True)
+        if event == '-login-redirect-' or event == '-sign-up-to-log-in-':
+            window_login_in['-login-screen-'].update(visible=True)
+            window_login_in['-signup-screen-'].update(visible=False)
+            window_login_in['-reset-screen-'].update(visible=False)
+            window_login_in.set_title('Login page')
+
+    if os.path.exists(os.path.join('../security', 'auth.json')):
+        os.remove(os.path.join('../security', 'auth.json'))
+    window_login_in.close()
 
 
 if __name__ == '__main__':

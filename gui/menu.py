@@ -17,13 +17,12 @@ def default_menu():
 
 def login_menu():
     menu_login = [
-        ['&File', ['Show device list', 'Show faulty device list', '---', 'E&xit']],
-        ['!&Admin', ['&Create user', '&Remove user', '&Update user']],
+        ['&File', ['Show faulty device list', '---', 'E&xit']],
+        ['&Admin', ['&Create users', '&Remove users', '&List all users']],
         ['&Generate', ['Student QR code', 'Device QR code', ['Single device', 'Multiple devices']]],
         ['&Report', ['Faulty device']],
         ['&Help', ['&About...']],
-        ['!&Login', ['Login']],
-        ['Log&out', ['Logout']]
+        ['My account', ['Update password', 'Logout']]
     ]
     return menu_login
 
