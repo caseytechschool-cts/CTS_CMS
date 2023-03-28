@@ -1,68 +1,68 @@
-﻿Device name,device type,device sub-type
-Dell laptop 1,electronics,laptop
-Dell laptop 2,electronics,laptop
-Dell laptop 3,electronics,laptop
-Dell laptop 4,electronics,laptop
-Dell laptop 5,electronics,laptop
-Dell laptop 6,electronics,laptop
-Dell laptop 7,electronics,laptop
-Dell laptop 8,electronics,laptop
-Dell laptop 9,electronics,laptop
-Dell laptop 10,electronics,laptop
-Dell laptop 11,electronics,laptop
-Dell laptop 12,electronics,laptop
-Dell laptop 13,electronics,laptop
-Dell laptop 14,electronics,laptop
-Dell laptop 15,electronics,laptop
-Dell laptop 16,electronics,laptop
-Dell laptop 17,electronics,laptop
-Dell laptop 18,electronics,laptop
-Dell laptop 19,electronics,laptop
-Dell laptop 20,electronics,laptop
-Dell laptop 21,electronics,laptop
-Dell laptop 22,electronics,laptop
-Dell laptop 23,electronics,laptop
-Dell laptop 24,electronics,laptop
-Dell laptop 25,electronics,laptop
-Dell laptop 26,electronics,laptop
-Dell laptop 27,electronics,laptop
-Dell laptop 28,electronics,laptop
-Dell laptop 29,electronics,laptop
-Dell laptop 30,electronics,laptop
-Aftershock1,electronics,laptop
-Aftershock2,electronics,laptop
-Aftershock3,electronics,laptop
-Aftershock4,electronics,laptop
-Aftershock5,electronics,laptop
-Aftershock6,electronics,laptop
-Aftershock7,electronics,laptop
-Aftershock8,electronics,laptop
-Aftershock9,electronics,laptop
-Tello edu drone 1,electronics,drone
-Tello edu drone 2,electronics,drone
-Tello edu drone 3,electronics,drone
-Tello edu drone 4,electronics,drone
-Tello edu drone 5,electronics,drone
-Tello edu drone 6,electronics,drone
-Tello edu drone 7,electronics,drone
-Tello edu drone 8,electronics,drone
-Tello edu drone 9,electronics,drone
-Tello edu drone 10,electronics,drone
-Tello edu drone 11,electronics,drone
-Tello edu drone 12,electronics,drone
-Tello edu drone 13,electronics,drone
-Tello edu drone 14,electronics,drone
-Tello edu drone 15,electronics,drone
-Tello edu drone 16,electronics,drone
-Tello edu drone 17,electronics,drone
-Tello edu drone 18,electronics,drone
-Tello edu drone 19,electronics,drone
-Tello edu drone 20,electronics,drone
-Hummingbird kit1,electronics,hummingbird
-Hummingbird kit2,electronics,hummingbird
-Hummingbird kit3,electronics,hummingbird
-Hummingbird kit4,electronics,hummingbird
-Hummingbird kit5,electronics,hummingbird
-Hummingbird kit6,electronics,hummingbird
-Hummingbird kit7,electronics,hummingbird
-Hummingbird kit8,electronics,hummingbird
+﻿Device name,device type,device sub-type,location
+Dell laptop 1,electronics,laptop,CTS
+Dell laptop 2,electronics,laptop,CTS
+Dell laptop 3,electronics,laptop,CTS
+Dell laptop 4,electronics,laptop,CTS
+Dell laptop 5,electronics,laptop,CTS
+Dell laptop 6,electronics,laptop,CTS
+Dell laptop 7,electronics,laptop,CTS
+Dell laptop 8,electronics,laptop,CTS
+Dell laptop 9,electronics,laptop,CTS
+Dell laptop 10,electronics,laptop,CTS
+Dell laptop 11,electronics,laptop,CTS
+Dell laptop 12,electronics,laptop,CTS
+Dell laptop 13,electronics,laptop,CTS
+Dell laptop 14,electronics,laptop,CTS
+Dell laptop 15,electronics,laptop,CTS
+Dell laptop 16,electronics,laptop,CTS
+Dell laptop 17,electronics,laptop,CTS
+Dell laptop 18,electronics,laptop,CTS
+Dell laptop 19,electronics,laptop,CTS
+Dell laptop 20,electronics,laptop,CTS
+Dell laptop 21,electronics,laptop,CTS
+Dell laptop 22,electronics,laptop,CTS
+Dell laptop 23,electronics,laptop,CTS
+Dell laptop 24,electronics,laptop,CTS
+Dell laptop 25,electronics,laptop,CTS
+Dell laptop 26,electronics,laptop,CTS
+Dell laptop 27,electronics,laptop,CTS
+Dell laptop 28,electronics,laptop,CTS
+Dell laptop 29,electronics,laptop,CTS
+Dell laptop 30,electronics,laptop,CTS
+Aftershock1,electronics,laptop,CTS
+Aftershock2,electronics,laptop,CTS
+Aftershock3,electronics,laptop,CTS
+Aftershock4,electronics,laptop,CTS
+Aftershock5,electronics,laptop,CTS
+Aftershock6,electronics,laptop,CTS
+Aftershock7,electronics,laptop,CTS
+Aftershock8,electronics,laptop,CTS
+Aftershock9,electronics,laptop,CTS
+Tello edu drone 1,electronics,drone,CTS
+Tello edu drone 2,electronics,drone,CTS
+Tello edu drone 3,electronics,drone,CTS
+Tello edu drone 4,electronics,drone,CTS
+Tello edu drone 5,electronics,drone,CTS
+Tello edu drone 6,electronics,drone,CTS
+Tello edu drone 7,electronics,drone,CTS
+Tello edu drone 8,electronics,drone,CTS
+Tello edu drone 9,electronics,drone,CTS
+Tello edu drone 10,electronics,drone,CTS
+Tello edu drone 11,electronics,drone,CTS
+Tello edu drone 12,electronics,drone,CTS
+Tello edu drone 13,electronics,drone,CTS
+Tello edu drone 14,electronics,drone,CTS
+Tello edu drone 15,electronics,drone,CTS
+Tello edu drone 16,electronics,drone,CTS
+Tello edu drone 17,electronics,drone,CTS
+Tello edu drone 18,electronics,drone,CTS
+Tello edu drone 19,electronics,drone,CTS
+Tello edu drone 20,electronics,drone,CTS
+Hummingbird kit1,electronics,hummingbird,CTS
+Hummingbird kit2,electronics,hummingbird,CTS
+Hummingbird kit3,electronics,hummingbird,CTS
+Hummingbird kit4,electronics,hummingbird,CTS
+Hummingbird kit5,electronics,hummingbird,CTS
+Hummingbird kit6,electronics,hummingbird,CTS
+Hummingbird kit7,electronics,hummingbird,CTS
+Hummingbird kit8,electronics,hummingbird,CTS

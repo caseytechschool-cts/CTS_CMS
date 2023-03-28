@@ -8,6 +8,6 @@ import base64
 
 
 def image_to_base64(name) -> bytes:
-    with open(path.join("../images", name), "rb") as data:
+    with open(path.join("../assets", name), "rb") as data:
         image_data = data.read()
         return base64.b64encode(image_data)

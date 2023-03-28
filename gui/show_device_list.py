@@ -1,6 +1,5 @@
 import os.path
-
-from firebase.CURD import device_list
+from firebase.CURD import device_list, add_device_to_database
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
 from helper_lib.search import search_devices
@@ -10,9 +9,11 @@ import uuid
 import csv
 from menu import login_menu
 from main import show_main_screen
+from csv_files import csv_reader
 
 table_heading = ['Device ID', 'Borrowed by', 'Device sub type', 'Device type', 'Faulty?', 'Device name']
-
+font_underline = ('Century Gothic', 10, 'underline')
+font_normal = ('Century Gothic', 10, '')
 
 def show_device_list_window():
     sg.theme('Material1')
@@ -75,6 +76,19 @@ def show_device_list_window():
             if path.exists(path.join('../security', 'auth.json')):
                 os.remove(path.join('../security', 'auth.json'))
             show_main_screen()
+        if event == 'Student QR code':
+            csv_file_path = sg.popup_get_file(message='Upload student booking csv file', title='File uploader',
+                                              font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),))
+            # print(csv_file_path)
+            csv_reader.csv_student_reader(filename=csv_file_path, default=False)
+            sg.popup_notify('QRcode generation done! Check your Downloads folder.')
+        if event == 'Devices':
+            csv_file_path = sg.popup_get_file(message='Upload device csv file', title='File uploader',
+                                              font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),))
+            # print(csv_file_path)
+            add_device_to_database(filename=csv_file_path, default=False)
+            sg.popup_notify('Devices added successfully\n QRcode generation done! Check your Downloads folder.')
+
 
 
 if __name__ == '__main__':
