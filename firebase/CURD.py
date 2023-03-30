@@ -7,7 +7,7 @@ from qr_code.qrcode_generator import create_qrcode
 from pathlib import Path
 
 
-def add_device_to_database(filename: str, default=True) -> None:
+def add_device_to_database(window, filename: str, default=True) -> None:
     if default:
         dir_path = path.join('../CSV', filename)
         qr_save_path = path.join('../QRCode', 'device')
@@ -35,6 +35,7 @@ def add_device_to_database(filename: str, default=True) -> None:
 
             else:
                 line_count = 1
+    window.write_event_value('-Thread-device-upload-', 'done')
 
 
 def device_list():

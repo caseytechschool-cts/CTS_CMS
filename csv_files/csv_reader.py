@@ -4,7 +4,7 @@ import uuid
 from qr_code.qrcode_generator import create_qrcode
 from pathlib import Path
 
-def csv_student_reader(filename: str, default=True) -> None:
+def csv_student_reader(window, filename: str, default=True) -> None:
     if default:
         filepath = path.join('../CSV', filename)
         qr_save_path = path.join('../QRCode', 'school')
@@ -30,6 +30,7 @@ def csv_student_reader(filename: str, default=True) -> None:
                 create_qrcode(student, qr_file_name, 'school', qr_save_path)
             else:
                 line_count += 1
+    window.write_event_value('-Thread-student-qrcode-', 'done')
 
 
 # if __name__ == '__main__':
