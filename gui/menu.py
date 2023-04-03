@@ -17,7 +17,7 @@ def default_menu():
 
 def login_menu():
     menu_login = [
-        ['&File', ['Show faulty device list', '---', 'E&xit']],
+        ['&File', ['Download device list CSV file template', '---', 'E&xit']],
         ['&Admin', ['&Create users', '&List all users']],
         ['&Create', ['Student QR code']],
         ['Add', ['Devices']],

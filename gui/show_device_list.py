@@ -64,8 +64,10 @@ def show_device_list_window(user_auth):
          sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding),
          sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
                    pad=header_padding),
-         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False, button_color='#f6bb42', pad=header_padding),
-         sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260', pad=header_padding), sg.Push()],
+         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False, button_color='#fcb116', pad=header_padding),
+         sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260', pad=header_padding),
+        sg.Button(button_text='   Fault details   ', pad=header_padding, key='-fault-details-', visible=False, button_color='#ff696a'),
+         sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False, button_color='#2db52c'), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
                   auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map)],
@@ -125,6 +127,8 @@ def show_device_list_window(user_auth):
             window_all_devices['-modify-device-button-'].update(visible=True)
             window_all_devices['-faulty-report-device-button-'].update(visible=True)
             window_all_devices['-delete-device-button-'].update(visible=True)
+            window_all_devices['-fault-details-'].update(visible=selected_device[3])
+            window_all_devices['-mark-as-resolved-'].update(visible=selected_device[3])
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
         if event == '-faulty-report-device-button-':
