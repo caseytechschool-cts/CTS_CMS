@@ -137,7 +137,9 @@ def show_device_list_window(user_auth):
         if event == '-fault-details-':
             fault_details(selected_device[0], idToken)
         if event == '-mark-as-resolved-':
-            pass
+            db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
+            db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
+            storage.child('images').delete(name=selected_device[0]+'.jpg', token=idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             print(values['-filter-query-'])
             query = values['-filter-query-']
@@ -171,6 +173,8 @@ def show_device_list_window(user_auth):
         thread_download_csv.join()
     if thread_student_qrcode is not None:
         thread_student_qrcode.join()
+    if path.exists('download.png'):
+        os.remove('download.png')
     window_all_devices.close()
 
 

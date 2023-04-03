@@ -1,6 +1,8 @@
 import PySimpleGUI as sg
 from firebase.config import *
 from helper_lib.base64image import image_to_base64
+from PIL import Image
+from os import path
 
 
 def report_device(selected_device, idToken):
@@ -28,6 +30,8 @@ def report_device(selected_device, idToken):
             db.child('devices').child(selected_device[0]).update(data=device_data, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).set(data=faulty_device_data, token=idToken)
             if values['-path-']:
+                extention = path.splitext(values['-path-'])[1].lower()
+                print(extention)
                 storage.child('images').child(selected_device[0]).put(file=values['-path-'], token=idToken)
             sg.popup_notify('Device reported successfully!')
             break
