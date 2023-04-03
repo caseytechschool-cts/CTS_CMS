@@ -15,6 +15,7 @@ from threading import Thread
 from schedule import repeat,every,run_pending
 import json
 from device_modifier import modify_device
+from device_report import report_device
 
 
 # def stream_handler(message):
@@ -126,6 +127,8 @@ def show_device_list_window(user_auth):
             window_all_devices['-delete-device-button-'].update(visible=True)
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
+        if event == '-faulty-report-device-button-':
+            report_device(selected_device, idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             print(values['-filter-query-'])
             query = values['-filter-query-']

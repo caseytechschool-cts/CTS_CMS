@@ -9,7 +9,7 @@ def modify_device(selected_device, idToken):
               [sg.Text('Device type'), sg.Input(key='-TYPE-', default_text=selected_device[2])],
               [sg.Text('Device sub-type'), sg.Input(key='-SUB-TYPE-', default_text=selected_device[1])],
               [sg.Text('Device location'), sg.Input(key='-LOCATION-', default_text=selected_device[4])],
-              [sg.OK(button_color='#2db52c'), sg.Cancel()]]
+              [sg.Button(button_color='#2db52c', button_text='Submit'), sg.Cancel()]]
 
     window = sg.Window('Modify device', layout, element_justification='r', keep_on_top=True,
                        icon=image_to_base64('logo.png'), finalize=True)
