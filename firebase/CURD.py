@@ -7,7 +7,7 @@ from qr_code.qrcode_generator import create_qrcode
 from pathlib import Path
 
 
-def add_device_to_database(window, filename: str, default=True) -> None:
+def add_device_to_database(window, filename: str, idToken=None, default=True) -> None:
     if default:
         dir_path = path.join('../CSV', filename)
         qr_save_path = path.join('../QRCode', 'device')
@@ -29,7 +29,7 @@ def add_device_to_database(window, filename: str, default=True) -> None:
                     "isFaulty": False,
                     "location": row[3]
                 }
-                device_id = db.child('devices').push(device_data)
+                device_id = db.child('devices').push(device_data, token=idToken)
                 device_data['id'] = device_id['name']
                 create_qrcode(device_data, f"{device_data['name']} {device_data['id']}", 'device', qr_save_path)
 
@@ -38,8 +38,8 @@ def add_device_to_database(window, filename: str, default=True) -> None:
     window.write_event_value('-Thread-device-upload-', 'done')
 
 
-def device_list():
-    all_devices = db.child("devices").get().val()
+def device_list(idToken):
+    all_devices = db.child("devices").get(token=idToken).val()
     if all_devices:
         all_devices = dict(all_devices)
         all_devices_list = []
@@ -55,8 +55,8 @@ def device_list():
         return [[]], False
 
 
-def remove_device_from_database(user):
-    pass
+def remove_device_from_database(device_id, idToken):
+    db.child('devices').child(device_id).remove(token=idToken)
 
 
 def read_device_list(user):
@@ -67,7 +67,7 @@ def read_device(user):
     pass
 
 
-def update_device(user):
+def update_device(idToken):
     pass
 
 

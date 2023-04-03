@@ -1,5 +1,6 @@
 import os.path
-from firebase.CURD import device_list, add_device_to_database
+from firebase.CURD import device_list, add_device_to_database, remove_device_from_database
+from firebase.config import *
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
 from helper_lib.search import search_devices
@@ -11,15 +12,46 @@ from menu import login_menu
 from main import show_main_screen
 from csv_files import csv_reader
 from threading import Thread
+from schedule import repeat,every,run_pending
+import json
+from device_modifier import modify_device
+
+
+# def stream_handler(message):
+#     data = []
+#     print(message["event"]) # put
+#     print(message["path"]) # /-K7yGTTEp7O549EzTYtI
+#     # print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
+#     print(type(message['data']))
+#     # for key, value in message['data'].items():
+#     #     data.append(value)
+#     # print(data)
+#
+#
+# my_stream = db.child("devices").stream(stream_handler)
 
 table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
+col_map = [False, True, True, True, True, True]
 font_underline = ('Century Gothic', 10, 'underline')
 font_normal = ('Century Gothic', 10, '')
+user = None
 
 
-def show_device_list_window():
+@repeat(every(1).hour)
+def refresh_token(user_auth):
+    global user
+    user = auth.refresh(user_auth['refreshToken'])
+    with open(os.path.join('../security', "auth.json"), "w") as outfile:
+        json.dump(user, outfile)
+
+
+def show_device_list_window(user_auth):
     sg.theme('Material1')
-    table_data, status = device_list()
+    if user is None:
+        idToken = user_auth['idToken']
+    else:
+        idToken = user['idToken']
+    table_data, status = device_list(idToken)
     filter_table_data = table_data
     header_padding = ((5, 5), (20, 20))
     layout_all_devices = [
@@ -29,11 +61,13 @@ def show_device_list_window():
                                   key='-download-device-list-', background_color='white', pad=header_padding),
          sg.Input(default_text='Type here...', key='-filter-query-', do_not_clear=False, pad=header_padding),
          sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding),
-         sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c', pad=header_padding),
+         sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
+                   pad=header_padding),
+         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False, button_color='#f6bb42', pad=header_padding),
          sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260', pad=header_padding), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
-                  auto_size_columns=True, vertical_scroll_only=False)],
+                  auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map)],
         [sg.Sizegrip()]
     ]
 
@@ -55,6 +89,7 @@ def show_device_list_window():
 
     while True:
         event, values = window_all_devices.read()
+        run_pending()
         print(event)
         if event == '-Thread-device-upload-':
             sg.popup_notify('Devices added successfully\nQRcode generation done! Check your Downloads folder.')
@@ -67,8 +102,9 @@ def show_device_list_window():
         if event == '-delete-device-button-':
             result = sg.popup_ok_cancel('Are you sure you want to delete this device? This action will remove it completely.',
                                         title='Delete device', font=font_normal, icon=image_to_base64('logo.png'))
-            print(result)
-
+            if result == 'OK':
+                remove_device_from_database(selected_device[0], idToken)
+                sg.popup_notify('Device deleted successfully.')
         if event == '-download-device-list-':
             file_id = str(uuid.uuid4())
             if '-download-all-' in values[event]:
@@ -86,8 +122,10 @@ def show_device_list_window():
         if '-all-devices-' in event:
             selected_device = filter_table_data[values['-all-devices-'][0]]
             window_all_devices['-modify-device-button-'].update(visible=True)
+            window_all_devices['-faulty-report-device-button-'].update(visible=True)
             window_all_devices['-delete-device-button-'].update(visible=True)
-            print(selected_device)
+        if event == '-modify-device-button-':
+            modify_device(selected_device, idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             print(values['-filter-query-'])
             query = values['-filter-query-']
@@ -112,7 +150,7 @@ def show_device_list_window():
                                               icon=image_to_base64('logo.png'))
             if csv_file_path:
                 thread_device_upload = Thread(target=add_device_to_database,
-                                              args=(window_all_devices, csv_file_path, False))
+                                              args=(window_all_devices, csv_file_path, idToken, False))
                 thread_device_upload.start()
 
     if thread_device_upload is not None:
@@ -126,3 +164,4 @@ def show_device_list_window():
 
 if __name__ == '__main__':
     show_device_list_window()
+

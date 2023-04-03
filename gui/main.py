@@ -64,7 +64,7 @@ def show_main_screen():
             else:
                 window_login_in['-login-error-'].update(visible=False, value='')
                 window_login_in.close()
-                show_device_list.show_device_list_window()
+                show_device_list.show_device_list_window(user)
         if event == '-sign-up-':
             window_login_in['-login-screen-'].update(visible=False)
             window_login_in['-signup-screen-'].update(visible=True)

@@ -21,7 +21,6 @@ def login_menu():
         ['&Admin', ['&Create users', '&List all users']],
         ['&Create', ['Student QR code']],
         ['Add', ['Devices']],
-        ['&Report', ['Faulty device']],
         ['&Help', ['&About...']],
         ['My account', ['Update password', 'Logout']]
     ]
