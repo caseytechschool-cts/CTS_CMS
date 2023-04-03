@@ -16,6 +16,7 @@ from schedule import repeat,every,run_pending
 import json
 from device_modifier import modify_device
 from device_report import report_device
+from fault_details_window import fault_details
 
 
 # def stream_handler(message):
@@ -32,7 +33,7 @@ from device_report import report_device
 # my_stream = db.child("devices").stream(stream_handler)
 
 table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
-col_map = [False, True, True, True, True, True]
+col_map = [True, True, True, True, True, True]
 font_underline = ('Century Gothic', 10, 'underline')
 font_normal = ('Century Gothic', 10, '')
 user = None
@@ -124,15 +125,19 @@ def show_device_list_window(user_auth):
                 thread_download_csv.start()
         if '-all-devices-' in event:
             selected_device = filter_table_data[values['-all-devices-'][0]]
-            window_all_devices['-modify-device-button-'].update(visible=True)
-            window_all_devices['-faulty-report-device-button-'].update(visible=True)
-            window_all_devices['-delete-device-button-'].update(visible=True)
+            window_all_devices['-modify-device-button-'].update(visible=not selected_device[3])
+            window_all_devices['-faulty-report-device-button-'].update(visible=not selected_device[3])
+            window_all_devices['-delete-device-button-'].update(visible=not selected_device[3])
             window_all_devices['-fault-details-'].update(visible=selected_device[3])
             window_all_devices['-mark-as-resolved-'].update(visible=selected_device[3])
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
         if event == '-faulty-report-device-button-':
             report_device(selected_device, idToken)
+        if event == '-fault-details-':
+            fault_details(selected_device[0], idToken)
+        if event == '-mark-as-resolved-':
+            pass
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             print(values['-filter-query-'])
             query = values['-filter-query-']
@@ -171,4 +176,5 @@ def show_device_list_window(user_auth):
 
 if __name__ == '__main__':
     show_device_list_window()
+
 

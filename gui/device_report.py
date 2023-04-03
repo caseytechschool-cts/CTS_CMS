@@ -8,7 +8,7 @@ def report_device(selected_device, idToken):
     layout = [[sg.Text('Brief description of the problem')],
               [sg.Multiline(key='-description-', expand_x=True, size=(100, 10))],
               [sg.Push(), sg.Text('Add images'), sg.Input(key='-path-'), sg.FileBrowse(), sg.Push()],
-              [sg.Push(), sg.Button(button_color='#f6bb42', button_text='Submit'), sg.Cancel(), sg.Push()]
+              [sg.Push(), sg.Button(button_color='#fcb116', button_text='Submit'), sg.Cancel(), sg.Push()]
               ]
 
     window = sg.Window('Report as faulty', layout, element_justification='l', keep_on_top=True,
@@ -23,11 +23,12 @@ def report_device(selected_device, idToken):
                 "isFaulty": True
             }
             faulty_device_data = {
-                "description":values['-description-']
+                "description": values['-description-'] if values['-description-'] else ''
             }
             db.child('devices').child(selected_device[0]).update(data=device_data, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).set(data=faulty_device_data, token=idToken)
-            storage.child('images').child(selected_device[0]).put(file=values['-path-'], token=idToken)
+            if values['-path-']:
+                storage.child('images').child(selected_device[0]).put(file=values['-path-'], token=idToken)
             sg.popup_notify('Device reported successfully!')
             break
     window.close()
