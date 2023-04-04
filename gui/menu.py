@@ -17,12 +17,12 @@ def default_menu():
 
 def login_menu():
     menu_login = [
-        ['&File', ['Download device list CSV file template', '---', 'E&xit']],
+        ['&File', ['Faulty device list', 'Download device list CSV file template', '---', 'E&xit']],
         ['&Admin', ['&Create users', '&List all users']],
         ['&Create', ['Student QR code']],
         ['Add', ['Devices']],
         ['&Help', ['&About...']],
-        ['My account', ['Update password', 'Logout']]
+        ['My account', ['Update account', 'Logout']]
     ]
     return menu_login
 

@@ -18,22 +18,35 @@ from device_modifier import modify_device
 from device_report import report_device
 from fault_details_window import fault_details
 
+table_data = [[]]
+filter_table_data = table_data
+window_all_devices = None
 
-# def stream_handler(message):
-#     data = []
-#     print(message["event"]) # put
-#     print(message["path"]) # /-K7yGTTEp7O549EzTYtI
-#     # print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
-#     print(type(message['data']))
-#     # for key, value in message['data'].items():
-#     #     data.append(value)
-#     # print(data)
-#
-#
-# my_stream = db.child("devices").stream(stream_handler)
+
+def delete_item_from_table(device_id):
+    for index in range(len(table_data)):
+        if table_data[index][0] == device_id:
+            del table_data[index]
+            # window_all_devices['-all-devices-'].update(values=table_data)
+            # window_all_devices.refresh()
+            break
+    window_all_devices.write_event_value('-table-item-delete-', 'full-table')
+
+
+def stream_handler(message):
+    data = []
+    print(message["event"]) # put
+    print(message["path"]) # /-K7yGTTEp7O549EzTYtI
+    print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
+    print(type(message['data']))
+
+    if message['event'] == 'put' and isinstance(message['data'], type(None)):
+        document_id = message['path'][1:]
+        delete_item_from_table(document_id)
+
 
 table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
-col_map = [True, True, True, True, True, True]
+col_map = [False, True, True, True, True, True]
 font_underline = ('Century Gothic', 10, 'underline')
 font_normal = ('Century Gothic', 10, '')
 user = None
@@ -53,6 +66,8 @@ def show_device_list_window(user_auth):
         idToken = user_auth['idToken']
     else:
         idToken = user['idToken']
+    my_stream = db.child("devices").stream(stream_handler, token=idToken)
+    global table_data,filter_table_data
     table_data, status = device_list(idToken)
     filter_table_data = table_data
     header_padding = ((5, 5), (20, 20))
@@ -61,7 +76,7 @@ def show_device_list_window(user_auth):
         [sg.Push(), sg.ButtonMenu('  Download  ', menu_def=['Download', ['Download all::-download-all-',
                                                                      'Download selected::-download-selected-']],
                                   key='-download-device-list-', background_color='white', pad=header_padding),
-         sg.Input(default_text='Type here...', key='-filter-query-', do_not_clear=False, pad=header_padding),
+         sg.Input(default_text='', key='-filter-query-', do_not_clear=True, pad=header_padding),
          sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding),
          sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
                    pad=header_padding),
@@ -71,13 +86,15 @@ def show_device_list_window(user_auth):
          sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False, button_color='#2db52c'), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
-                  auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map)],
+                  auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map, display_row_numbers=True,
+                  select_mode=sg.TABLE_SELECT_MODE_BROWSE)],
         [sg.Sizegrip()]
     ]
 
     max_width, max_height = sg.Window.get_screen_size()
     max_width = int(max_width * 0.8)
     max_height = int(max_height * 0.6)
+    global window_all_devices
     window_all_devices = sg.Window(title="CTS CMS",
                                    layout=layout_all_devices,
                                    size=(max_width, max_height),
@@ -92,9 +109,9 @@ def show_device_list_window(user_auth):
     thread_download_csv = None
 
     while True:
-        event, values = window_all_devices.read()
+        event, values = window_all_devices.read(timeout=100)
         run_pending()
-        print(event)
+        # print(event)
         if event == '-Thread-device-upload-':
             sg.popup_notify('Devices added successfully\nQRcode generation done! Check your Downloads folder.')
         if event == '-Thread-csv-download-':
@@ -143,6 +160,7 @@ def show_device_list_window(user_auth):
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             print(values['-filter-query-'])
             query = values['-filter-query-']
+            window_all_devices['-filter-query-'].update(value="")
             filter_table_data = search_devices(table_data, query)
             window_all_devices['-all-devices-'].update(values=filter_table_data)
         if event == 'Logout':
@@ -166,6 +184,10 @@ def show_device_list_window(user_auth):
                 thread_device_upload = Thread(target=add_device_to_database,
                                               args=(window_all_devices, csv_file_path, idToken, False))
                 thread_device_upload.start()
+        if event == 'Update account':
+            pass
+        if event == '-table-item-delete-' and values[event] == 'full-table':
+            window_all_devices['-all-devices-'].update(values=table_data)
 
     if thread_device_upload is not None:
         thread_device_upload.join()
@@ -175,6 +197,7 @@ def show_device_list_window(user_auth):
         thread_student_qrcode.join()
     if path.exists('download.png'):
         os.remove('download.png')
+    my_stream.close()
     window_all_devices.close()
 
 
