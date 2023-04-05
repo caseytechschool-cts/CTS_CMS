@@ -26,6 +26,6 @@ def modify_device(selected_device, idToken):
                 "location": values['-LOCATION-']
             }
             db.child('devices').child(selected_device[0]).update(data=device_data, token=idToken)
-            sg.popup_notify('Device updated successfully!')
+            sg.popup_quick_message('Device updated successfully!', auto_close_duration=1)
             break
     window.close()

@@ -52,7 +52,7 @@ def device_list(idToken):
         if any(all_devices_list):
             return all_devices_list, True
     else:
-        return [[]], False
+        return [], False
 
 
 def remove_device_from_database(device_id, idToken):
@@ -90,8 +90,6 @@ def user_log_in(email: str, password: str) -> None:
         msg = 'Request times out'
     return user, msg
 
-    # user = auth.refresh(user['refreshToken'])
-    # print(user)
 
 if __name__ == '__main__':
     device_list()

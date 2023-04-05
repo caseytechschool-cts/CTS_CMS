@@ -12,37 +12,107 @@ from menu import login_menu
 from main import show_main_screen
 from csv_files import csv_reader
 from threading import Thread
-from schedule import repeat,every,run_pending
+from schedule import repeat, every, run_pending
 import json
 from device_modifier import modify_device
 from device_report import report_device
 from fault_details_window import fault_details
 
-table_data = [[]]
-filter_table_data = table_data
+table_data = []
+filter_table_data = []
 window_all_devices = None
 
 
+def update_device(device_id, device_updated_data):
+    change_main_table = False
+    change_filterred_table = False
+    for index in range(len(table_data)):
+        if table_data[index][0] == device_id:
+            for key, val in device_updated_data.items():
+                if key == 'device_sub_type':
+                    table_data[index][1] = val
+                if key == 'device_type':
+                    table_data[index][2] = val
+                if key == 'isFaulty':
+                    table_data[index][3] = val
+                if key == 'location':
+                    table_data[index][4] = val
+                if key == 'name':
+                    table_data[index][5] = val
+            change_main_table = True
+            break
+    if change_main_table:
+        window_all_devices.write_event_value('-table-item-update-', 'full-table')
+
+    for index in range(len(filter_table_data)):
+        if filter_table_data[index][0] == device_id:
+            for key, val in device_updated_data.items():
+                if key == 'device_sub_type':
+                    filter_table_data[index][1] = val
+                if key == 'device_type':
+                    filter_table_data[index][2] = val
+                if key == 'isFaulty':
+                    filter_table_data[index][3] = val
+                if key == 'location':
+                    filter_table_data[index][4] = val
+                if key == 'name':
+                    filter_table_data[index][5] = val
+            change_filterred_table = True
+            break
+    if change_filterred_table:
+        window_all_devices.write_event_value('-table-item-update-', 'filter-table')
+
+
+def get_device_list_from_stream(device_list):
+    global filter_table_data, table_data
+    for key, val in device_list.items():
+        entry = [key]
+        for key1, val1 in val.items():
+            entry.append(val1)
+        table_data.append(entry)
+
+    filter_table_data = table_data
+    window_all_devices.write_event_value('-table-item-added-', 'full-table')
+
+
+def add_device_to_table_data(device_id, row_data):
+    row_data_to_add = [device_id]
+    for item_key, item_val in row_data.items():
+        row_data_to_add.append(item_val)
+    table_data.append(row_data_to_add)
+    window_all_devices.write_event_value('-table-item-added-', 'full-table')
+
+
 def delete_item_from_table(device_id):
+    change_main_table = False
+    change_filterred_table = False
     for index in range(len(table_data)):
         if table_data[index][0] == device_id:
             del table_data[index]
-            # window_all_devices['-all-devices-'].update(values=table_data)
-            # window_all_devices.refresh()
+            change_main_table = True
             break
-    window_all_devices.write_event_value('-table-item-delete-', 'full-table')
+    if change_main_table:
+        window_all_devices.write_event_value('-table-item-delete-', 'full-table')
+
+    for index in range(len(filter_table_data)):
+        if filter_table_data[index][0] == device_id:
+            del filter_table_data[index]
+            change_filterred_table = True
+            break
+    if change_filterred_table:
+        window_all_devices.write_event_value('-table-item-delete-', 'filter-table')
 
 
 def stream_handler(message):
-    data = []
-    print(message["event"]) # put
-    print(message["path"]) # /-K7yGTTEp7O549EzTYtI
-    print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
-    print(type(message['data']))
-
-    if message['event'] == 'put' and isinstance(message['data'], type(None)):
+    if message['event'] == 'put' and isinstance(message['data'], type(None)) and message['path'] != '/':
         document_id = message['path'][1:]
         delete_item_from_table(document_id)
+    elif message['event'] == 'patch' and isinstance(message['data'], dict):
+        update_device(message['path'][1:], message['data'])
+    elif message['event'] == 'put' and isinstance(message['data'], dict) and message['path'] != '/':
+        add_device_to_table_data(message['path'][1:], message['data'])
+    elif message['event'] == 'put' and isinstance(message['data'], dict):
+        get_device_list_from_stream(message['data'])
 
 
 table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
@@ -62,31 +132,36 @@ def refresh_token(user_auth):
 
 def show_device_list_window(user_auth):
     sg.theme('Material1')
+    show_main_table = True
     if user is None:
         idToken = user_auth['idToken']
     else:
         idToken = user['idToken']
     my_stream = db.child("devices").stream(stream_handler, token=idToken)
-    global table_data,filter_table_data
-    table_data, status = device_list(idToken)
-    filter_table_data = table_data
+    global table_data, filter_table_data
+
     header_padding = ((5, 5), (20, 20))
     layout_all_devices = [
         [sg.Menu(login_menu(), key='-menu-', background_color='white')],
         [sg.Push(), sg.ButtonMenu('  Download  ', menu_def=['Download', ['Download all::-download-all-',
-                                                                     'Download selected::-download-selected-']],
+                                                                         'Download selected::-download-selected-']],
                                   key='-download-device-list-', background_color='white', pad=header_padding),
          sg.Input(default_text='', key='-filter-query-', do_not_clear=True, pad=header_padding),
          sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding),
          sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
                    pad=header_padding),
-         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False, button_color='#fcb116', pad=header_padding),
-         sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260', pad=header_padding),
-        sg.Button(button_text='   Fault details   ', pad=header_padding, key='-fault-details-', visible=False, button_color='#ff696a'),
-         sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False, button_color='#2db52c'), sg.Push()],
+         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False,
+                   button_color='#fcb116', pad=header_padding),
+         sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260',
+                   pad=header_padding),
+         sg.Button(button_text='   Fault details   ', pad=header_padding, key='-fault-details-', visible=False,
+                   button_color='#ff696a'),
+         sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False,
+                   button_color='#2db52c'), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
-                  auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map, display_row_numbers=True,
+                  auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map,
+                  display_row_numbers=True,
                   select_mode=sg.TABLE_SELECT_MODE_BROWSE)],
         [sg.Sizegrip()]
     ]
@@ -111,21 +186,20 @@ def show_device_list_window(user_auth):
     while True:
         event, values = window_all_devices.read(timeout=100)
         run_pending()
-        # print(event)
         if event == '-Thread-device-upload-':
-            sg.popup_notify('Devices added successfully\nQRcode generation done! Check your Downloads folder.')
+            sg.popup_quick_message('Devices added successfully\nQRcode generation done! Check your Downloads folder.')
         if event == '-Thread-csv-download-':
-            sg.popup_notify('Download completed! Check your Downloads folder.')
+            sg.popup_quick_message('Download completed! Check your Downloads folder.', auto_close_duration=1)
         if event == '-Thread-student-qrcode-':
-            sg.popup_notify('QRcode generation completed! Check your Downloads folder.')
+            sg.popup_quick_message('QRcode generation completed! Check your Downloads folder.', auto_close_duration=1)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == '-delete-device-button-':
-            result = sg.popup_ok_cancel('Are you sure you want to delete this device? This action will remove it completely.',
-                                        title='Delete device', font=font_normal, icon=image_to_base64('logo.png'))
+            result = sg.popup_ok_cancel(
+                'Are you sure you want to delete this device? This action will remove it completely.',
+                title='Delete device', font=font_normal, icon=image_to_base64('logo.png'))
             if result == 'OK':
                 remove_device_from_database(selected_device[0], idToken)
-                sg.popup_notify('Device deleted successfully.')
         if event == '-download-device-list-':
             file_id = str(uuid.uuid4())
             if '-download-all-' in values[event]:
@@ -142,11 +216,13 @@ def show_device_list_window(user_auth):
                 thread_download_csv.start()
         if '-all-devices-' in event:
             selected_device = filter_table_data[values['-all-devices-'][0]]
-            window_all_devices['-modify-device-button-'].update(visible=not selected_device[3])
-            window_all_devices['-faulty-report-device-button-'].update(visible=not selected_device[3])
-            window_all_devices['-delete-device-button-'].update(visible=not selected_device[3])
-            window_all_devices['-fault-details-'].update(visible=selected_device[3])
-            window_all_devices['-mark-as-resolved-'].update(visible=selected_device[3])
+            print(selected_device)
+            if selected_device:
+                window_all_devices['-modify-device-button-'].update(visible=not selected_device[3])
+                window_all_devices['-faulty-report-device-button-'].update(visible=not selected_device[3])
+                window_all_devices['-delete-device-button-'].update(visible=not selected_device[3])
+                window_all_devices['-fault-details-'].update(visible=selected_device[3])
+                window_all_devices['-mark-as-resolved-'].update(visible=selected_device[3])
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
         if event == '-faulty-report-device-button-':
@@ -156,13 +232,17 @@ def show_device_list_window(user_auth):
         if event == '-mark-as-resolved-':
             db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
-            storage.child('images').delete(name=selected_device[0]+'.jpg', token=idToken)
+            storage.child('images').delete(name=selected_device[0] + '.jpg', token=idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
-            print(values['-filter-query-'])
             query = values['-filter-query-']
-            window_all_devices['-filter-query-'].update(value="")
-            filter_table_data = search_devices(table_data, query)
-            window_all_devices['-all-devices-'].update(values=filter_table_data)
+            if len(query):
+                window_all_devices['-filter-query-'].update(value="")
+                filter_table_data = search_devices(table_data, query)
+                window_all_devices['-all-devices-'].update(values=filter_table_data)
+                show_main_table = False
+            else:
+                window_all_devices['-all-devices-'].update(values=table_data)
+                show_main_table = True
         if event == 'Logout':
             window_all_devices.close()
             if path.exists(path.join('../security', 'auth.json')):
@@ -186,7 +266,19 @@ def show_device_list_window(user_auth):
                 thread_device_upload.start()
         if event == 'Update account':
             pass
-        if event == '-table-item-delete-' and values[event] == 'full-table':
+        if event == '-table-item-delete-' and values[event] == 'full-table' and show_main_table:
+            window_all_devices['-all-devices-'].update(values=table_data)
+            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1)
+        if event == '-table-item-delete-' and values[event] == 'filter-table' and not show_main_table:
+            window_all_devices['-all-devices-'].update(values=filter_table_data)
+            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1)
+        if event == '-table-item-update-' and values[event] == 'full-table' and show_main_table:
+            window_all_devices['-all-devices-'].update(values=table_data)
+            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
+        if event == '-table-item-update-' and values[event] == 'filter-table' and not show_main_table:
+            window_all_devices['-all-devices-'].update(values=filter_table_data)
+            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
+        if event == '-table-item-added-':
             window_all_devices['-all-devices-'].update(values=table_data)
 
     if thread_device_upload is not None:
@@ -203,5 +295,3 @@ def show_device_list_window(user_auth):
 
 if __name__ == '__main__':
     show_device_list_window()
-
-
