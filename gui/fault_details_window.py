@@ -5,7 +5,7 @@ from PIL import Image
 import io
 
 
-def resize_image(filepath, max_size=400):
+def resize_image(filepath, max_size=300):
     image = Image.open(filepath)
     width, height = image.size
     if width > height:
@@ -24,11 +24,9 @@ def resize_image(filepath, max_size=400):
 def fault_details(selected_device_id, idToken):
     sg.theme('Material1')
 
-    storage.child('images').child(selected_device_id).download(path='/', filename='download.png', token=idToken)
-
+    storage.child(selected_device_id + '.png').download(path='/', filename='download.png', token=idToken)
     description = db.child('faulty_devices').child(selected_device_id).get(token=idToken).val()
-    # image = resize_image('download.png')
-    layout = [[sg.Push(), sg.Image(data=resize_image('download.png', max_size=600)), sg.Push()],
+    layout = [[sg.Push(), sg.Image(data=resize_image('download.png')), sg.Push()],
               [sg.Text('Fault details')],
               [sg.Push(), sg.Multiline(key='-description-', expand_x=True, default_text=description['description'],
                                        size=(100, 10)), sg.Push()],
@@ -47,6 +45,6 @@ def fault_details(selected_device_id, idToken):
                 "description": values['-description-'] if values['-description-'] else ''
             }
             db.child('faulty_devices').child(selected_device_id).update(data=faulty_device_data, token=idToken)
-            sg.popup_notify('Updates are added successfully')
+            sg.popup_quick_message('Fault updates added successfully', auto_close_duration=1)
             break
     window.close()

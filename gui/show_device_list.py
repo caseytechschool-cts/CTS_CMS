@@ -1,5 +1,6 @@
+import csv
 import os.path
-from firebase.CURD import device_list, add_device_to_database, remove_device_from_database
+from firebase.CURD import add_device_to_database, remove_device_from_database
 from firebase.config import *
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
@@ -232,7 +233,7 @@ def show_device_list_window(user_auth):
         if event == '-mark-as-resolved-':
             db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
-            storage.child('images').delete(name=selected_device[0] + '.jpg', token=idToken)
+            storage.child(selected_device[0]+'.png').delete(name=selected_device[0]+'.png', token=idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             query = values['-filter-query-']
             if len(query):
@@ -280,6 +281,11 @@ def show_device_list_window(user_auth):
             sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
         if event == '-table-item-added-':
             window_all_devices['-all-devices-'].update(values=table_data)
+        if event == 'Download device list CSV file template':
+            with open(path.join(Path.home(), 'Downloads', 'device_list_csv_template.csv'), mode='w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['Device name', 'device type', 'device sub-type', 'location'])
+            sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1)
 
     if thread_device_upload is not None:
         thread_device_upload.join()

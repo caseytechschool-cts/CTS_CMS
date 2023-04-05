@@ -30,9 +30,7 @@ def report_device(selected_device, idToken):
             db.child('devices').child(selected_device[0]).update(data=device_data, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).set(data=faulty_device_data, token=idToken)
             if values['-path-']:
-                extention = path.splitext(values['-path-'])[1].lower()
-                print(extention)
-                storage.child('images').child(selected_device[0]).put(file=values['-path-'], token=idToken)
-            sg.popup_notify('Device reported successfully!')
+                storage.child(selected_device[0]+'.png').put(file=values['-path-'], token=idToken)
+            sg.popup_quick_message('Device reported successfully!', auto_close_duration=1)
             break
     window.close()
