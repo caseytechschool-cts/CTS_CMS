@@ -1,5 +1,4 @@
 import json
-
 import PySimpleGUI as sg
 import login_screen_layout
 from helper_lib.base64image import image_to_base64

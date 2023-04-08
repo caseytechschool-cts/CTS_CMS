@@ -1,4 +1,3 @@
-import PySimpleGUI as sg
 
 
 def default_menu():
@@ -17,8 +16,8 @@ def default_menu():
 
 def login_menu():
     menu_login = [
-        ['&File', ['Download device list CSV file template', '---', 'E&xit']],
-        ['&Create', ['Student QR code']],
+        ['&File', ['Borrowed device list', 'Download device list CSV file template', '---', 'E&xit']],
+        ['&Create', ['Student name tag']],
         ['Add', ['Devices']],
         ['&Help', ['&About...']],
         ['My account', ['Logout']]

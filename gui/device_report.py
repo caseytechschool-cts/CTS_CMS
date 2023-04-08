@@ -1,8 +1,6 @@
 import PySimpleGUI as sg
 from firebase.config import *
 from helper_lib.base64image import image_to_base64
-from PIL import Image
-from os import path
 
 
 def report_device(selected_device, idToken):

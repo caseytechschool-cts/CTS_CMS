@@ -11,13 +11,14 @@ from pathlib import Path
 import uuid
 from menu import login_menu
 from main import show_main_screen
-from csv_files import csv_reader
 from threading import Thread
 from schedule import repeat, every, run_pending
 import json
 from device_modifier import modify_device
 from device_report import report_device
 from fault_details_window import fault_details
+from . import student_name_tag_window
+
 
 table_data = []
 filter_table_data = []
@@ -217,7 +218,6 @@ def show_device_list_window(user_auth):
                 thread_download_csv.start()
         if '-all-devices-' in event:
             selected_device = filter_table_data[values['-all-devices-'][0]]
-            print(selected_device)
             if selected_device:
                 window_all_devices['-modify-device-button-'].update(visible=not selected_device[3])
                 window_all_devices['-faulty-report-device-button-'].update(visible=not selected_device[3])
@@ -249,14 +249,15 @@ def show_device_list_window(user_auth):
             if path.exists(path.join('../security', 'auth.json')):
                 os.remove(path.join('../security', 'auth.json'))
             show_main_screen()
-        if event == 'Student QR code':
-            csv_file_path = sg.popup_get_file(message='Upload student booking csv file', title='File uploader',
-                                              font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
-                                              icon=image_to_base64('logo.png'))
-            if csv_file_path:
-                thread_student_qrcode = Thread(target=csv_reader.csv_student_reader,
-                                               args=(window_all_devices, csv_file_path, False))
-                thread_student_qrcode.start()
+        if event == 'Student name tag':
+            student_name_tag_window.student_name_tag()
+            # csv_file_path = sg.popup_get_file(message='Upload student booking csv file', title='File uploader',
+            #                                   font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
+            #                                   icon=image_to_base64('logo.png'))
+            # if csv_file_path:
+            #     thread_student_qrcode = Thread(target=csv_reader.csv_student_reader,
+            #                                    args=(window_all_devices, csv_file_path, False))
+            #     thread_student_qrcode.start()
         if event == 'Devices':
             csv_file_path = sg.popup_get_file(message='Upload device csv file', title='File uploader',
                                               font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),

@@ -59,18 +59,6 @@ def remove_device_from_database(device_id, idToken):
     db.child('devices').child(device_id).remove(token=idToken)
 
 
-def read_device_list(user):
-    pass
-
-
-def read_device(user):
-    pass
-
-
-def update_device(idToken):
-    pass
-
-
 def user_log_in(email: str, password: str) -> None:
     user, msg = None, "successful"
     try:
