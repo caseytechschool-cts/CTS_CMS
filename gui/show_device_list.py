@@ -233,7 +233,7 @@ def show_device_list_window(user_auth):
         if event == '-mark-as-resolved-':
             db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
-            storage.child(selected_device[0]+'.png').delete(name=selected_device[0]+'.png', token=idToken)
+            storage.child(f"/{selected_device[0]}.png").delete(name=f"{selected_device[0]}.png", token=idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             query = values['-filter-query-']
             if len(query):
@@ -246,8 +246,8 @@ def show_device_list_window(user_auth):
                 show_main_table = True
         if event == 'Logout':
             window_all_devices.close()
-            if path.exists(path.join('../security', 'auth.json')):
-                os.remove(path.join('../security', 'auth.json'))
+            if path.exists(path.join('../firebase', 'auth.json')):
+                os.remove(path.join('../firebase', 'auth.json'))
             show_main_screen()
         if event == 'Student name tag':
             student_name_tag_window.student_name_tag()

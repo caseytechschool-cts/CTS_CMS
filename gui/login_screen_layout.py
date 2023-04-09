@@ -19,8 +19,8 @@ def login_screen_layout(f):
     user_name_value = file_exist('uname', f=f)
     password_value = file_exist('pword', f=f)
 
-    if os.path.exists(os.path.join('../security', 'auth.json')):
-        json_email = json.load(open(os.path.join('../security', 'auth.json')))
+    if os.path.exists(os.path.join('../firebase', 'auth.json')):
+        json_email = json.load(open(os.path.join('../firebase', 'auth.json')))
         user_name_value = json_email['email']
 
     login_screen_components = [

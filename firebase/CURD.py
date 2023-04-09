@@ -64,7 +64,7 @@ def user_log_in(email: str, password: str) -> None:
     try:
         user = auth.sign_in_with_email_and_password(email, password)
         # print(user)
-        with open(path.join('../security', "auth.json"), "w") as outfile:
+        with open(path.join('../firebase', "auth.json"), "w") as outfile:
             json.dump(user, outfile)
 
     except requests.exceptions.HTTPError as error:

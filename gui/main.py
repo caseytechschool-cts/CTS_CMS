@@ -54,8 +54,8 @@ def show_main_screen():
                     os.remove(os.path.join('../security', 'uname'))
                 if os.path.exists(os.path.join('../security', 'pword')):
                     os.remove(os.path.join('../security', 'pword'))
-            if os.path.exists(os.path.join('../security', 'auth.json')):
-                user = json.load(open(os.path.join('../security', 'auth.json'),))
+            if os.path.exists(os.path.join('../firebase', 'auth.json')):
+                user = json.load(open(os.path.join('../firebase', 'auth.json'),))
             else:
                 user, msg = user_log_in.log_in(values['-username-'], values['-password-'])
             if user is None:
@@ -94,8 +94,8 @@ def show_main_screen():
             window_login_in['-reset-screen-'].update(visible=False)
             window_login_in.set_title('Login page')
 
-    if os.path.exists(os.path.join('../security', 'auth.json')):
-        os.remove(os.path.join('../security', 'auth.json'))
+    if os.path.exists(os.path.join('../firebase', 'auth.json')):
+        os.remove(os.path.join('../firebase', 'auth.json'))
     window_login_in.close()
 
 
