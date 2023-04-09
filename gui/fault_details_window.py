@@ -31,7 +31,7 @@ def fault_details(selected_device_id, idToken):
     layout = [[sg.Push(), sg.Image(data=resize_image('download.png')), sg.Push()],
               [sg.Text('Fault details')],
               [sg.Push(), sg.Multiline(key='-description-', expand_x=True, default_text=description['description'],
-                                       size=(100, 5), autoscroll=True, disabled=True), sg.Push()],
+                                       size=(100, 10), autoscroll=True, disabled=True), sg.Push()],
               [sg.Text('Add update')],
               [sg.Input(key='-updates-', expand_x=True)],
               [sg.Push(), sg.Button(button_text='Add update', key='-add-update-'), sg.Push()],
@@ -53,7 +53,7 @@ def fault_details(selected_device_id, idToken):
                     added_at = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                     msg = f'Added by {email} at {added_at}\n'
             faulty_device_data = {
-                "description": msg + values['-updates-'] + '\n' + description['description']
+                "description": msg + values['-updates-'] + '\n\n' + description['description']
             }
             db.child('faulty_devices').child(selected_device_id).update(data=faulty_device_data, token=idToken)
             sg.popup_quick_message('Fault updates added successfully', auto_close_duration=1)

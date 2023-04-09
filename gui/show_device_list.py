@@ -233,7 +233,7 @@ def show_device_list_window(user_auth):
         if event == '-mark-as-resolved-':
             db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
-            storage.child(f"/{selected_device[0]}.png").delete(name=f"{selected_device[0]}.png", token=idToken)
+            storage.delete(name=f"{selected_device[0]}.png", token=idToken)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             query = values['-filter-query-']
             if len(query):
