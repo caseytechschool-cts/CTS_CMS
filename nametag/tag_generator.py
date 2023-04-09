@@ -1,12 +1,12 @@
 from pathlib import Path
 from os import path, makedirs
 import shutil
-
-import nametag.nametags
+from nametag.nametags import nametag_image
+from nametag.doc_template import create_doc_with_name_tags
 from csv_files import csv_reader
 
 
-def generate_name_tags(files, destination_folder, show_qr_code, show_box):
+def generate_name_tags(files, destination_folder, show_qr_code, show_box, window):
     csv_file_paths = files.split(';')
     if destination_folder == '':
         destination_folder = path.join(Path.home(), 'Downloads')
@@ -19,5 +19,10 @@ def generate_name_tags(files, destination_folder, show_qr_code, show_box):
     for csv_file in csv_file_paths:
         if show_qr_code:
             csv_reader.csv_student_reader(csv_file, save_in_folder)
-        nametag.nametags.nametag_image(csv_file, save_in_folder, show_qr_code, show_box)
+        nametag_image(csv_file, save_in_folder, show_qr_code, show_box)
+        create_doc_with_name_tags(save_in_folder)
+
+    window.write_event_value('-thread-name-tags-', 'generated')
+
+
 

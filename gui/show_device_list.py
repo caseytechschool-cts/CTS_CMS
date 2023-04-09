@@ -251,13 +251,6 @@ def show_device_list_window(user_auth):
             show_main_screen()
         if event == 'Student name tag':
             student_name_tag_window.student_name_tag()
-            # csv_file_path = sg.popup_get_file(message='Upload student booking csv file', title='File uploader',
-            #                                   font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
-            #                                   icon=image_to_base64('logo.png'))
-            # if csv_file_path:
-            #     thread_student_qrcode = Thread(target=csv_reader.csv_student_reader,
-            #                                    args=(window_all_devices, csv_file_path, False))
-            #     thread_student_qrcode.start()
         if event == 'Devices':
             csv_file_path = sg.popup_get_file(message='Upload device csv file', title='File uploader',
                                               font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
@@ -297,6 +290,8 @@ def show_device_list_window(user_auth):
     if path.exists('download.png'):
         os.remove('download.png')
     my_stream.close()
+    if path.exists(path.join('../security', 'auth.json')):
+        os.remove(path.join('../security', 'auth.json'))
     window_all_devices.close()
 
 

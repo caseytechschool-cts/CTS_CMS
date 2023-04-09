@@ -1,14 +1,4 @@
 ﻿Email,FirstName,LastName,Preferred name (if any),Role (student/teacher)
-sma.csedu@gmail.com,S M,Abdullah1234567890,Abdullah,student
-person1@gmail.com,Person1,Great1,,student
-person2@gmail.com,Person2,Great2,,student
-person3@gmail.com,Person3,Great3,PG,Teacher
-EvieMcIlwraith@armyspy.com,Evie,McIlwraith,,student
-BrookeDadson@armyspy.com,Brooke,Dadson,,student
-ZaharGolovanov@teleworm.us,Zahar,Golovanov,,student
-windler.vanessa@morar.org,Olive,Wright,,student
-dickens.elisabeth@gmail.com,Jordan,Cooper,,student
-josianne92@bednar.com,Carter,Cook,,student
 isabel.razo@yahoo.com,Lorena,Lglesias,,student
 ismael.romo@cuenca.com,Maria Rosa,Herrera,,student
 ismael.romo@cuenca.com,Beatriz,Fuentes,,student
@@ -23,6 +13,16 @@ jvandermeer@gmail.com,Joy van den,Bosch,,student
 vanderspaendonck.jayson@live.nl,Victor,Peters,,student
 mfonseca@machado.pt,David,Pinheiro,,student
 raul01@castro.eu,Tatiana,Castro,,student
+sma.csedu@gmail.com,S M,Abdullah1234567890,Abdullah,student
+person1@gmail.com,Person1,Great1,,student
+person2@gmail.com,Person2,Great2,,student
+person3@gmail.com,Person3,Great3,PG,Teacher
+EvieMcIlwraith@armyspy.com,Evie,McIlwraith,,student
+BrookeDadson@armyspy.com,Brooke,Dadson,,student
+ZaharGolovanov@teleworm.us,Zahar,Golovanov,,student
+windler.vanessa@morar.org,Olive,Wright,,student
+dickens.elisabeth@gmail.com,Jordan,Cooper,,student
+josianne92@bednar.com,Carter,Cook,,student
 amaral.yasmin@henriques.com,Claudio,Anjos,,student
 tsiaw@gmail.com,Jane,Sundram,,student
 hafizh.billy@haris.com,John,Krishnasamy,,student

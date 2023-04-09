@@ -12,7 +12,8 @@ def nametag_image(csv_file, destination_folder, show_qr_code, show_box):
     makedirs(nametag_path)
 
     if show_qr_code:
-        img_paths = glob.glob(path.join(destination_folder, 'qrcode', '*.png'))
+        img_paths = sorted(glob.glob(path.join(destination_folder, 'qrcode', '*.png')),
+                           key=lambda img_file: path.getmtime(img_file))
     with open(csv_file) as file:
         csv_data = csv.reader(file)
         line_count = 0
@@ -35,7 +36,7 @@ def nametag_image(csv_file, destination_folder, show_qr_code, show_box):
                 elif show_box and not show_qr_code:
                     draw.text((20, 40), first_name, font=name_font, fill=(0, 0, 0))
                     draw.text((20, 70), last_name, font=name_font, fill=(0, 0, 0))
-                    draw.rectangle((280, 55, 310, 85), outline=(0,0,0))
+                    draw.rectangle((280, 55, 310, 85), outline=(0, 0, 0))
                 else:
                     qr_code_path = img_paths.pop(0)
                     img.paste(Image.open(qr_code_path), (20, 20))
@@ -48,5 +49,3 @@ def nametag_image(csv_file, destination_folder, show_qr_code, show_box):
                 count += 1
             else:
                 line_count += 1
-
-
