@@ -2,7 +2,7 @@ from pathlib import Path
 from os import path, makedirs
 import shutil
 from nametag.nametags import nametag_image, devicetag_image
-from nametag.doc_template import create_doc_with_name_tags
+from nametag.doc_template import create_doc_with_device_tags, create_doc_with_name_tags
 from csv_files import csv_reader
 
 
@@ -38,7 +38,7 @@ def generate_device_tags(files, destination_folder, show_name, window):
     for csv_file in csv_file_paths:
         csv_reader.csv_device_reader(csv_file, save_in_folder)
         devicetag_image(csv_file, save_in_folder, show_name)
-        create_doc_with_name_tags(save_in_folder)
+        create_doc_with_device_tags(save_in_folder)
 
     window.write_event_value('-thread-device-tags-', 'generated')
 

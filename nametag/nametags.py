@@ -63,7 +63,7 @@ def devicetag_image(csv_file, destination_folder, show_name):
         csv_data = csv.reader(file)
         line_count = 0
         count = 1
-        name_font = ImageFont.truetype("arial.ttf", 12)
+        name_font = ImageFont.truetype("arial.ttf", 9)
         for row in csv_data:
             if line_count:
                 img = Image.new('RGBA', (240, 128), color=(255, 255, 255, 0))
@@ -71,7 +71,15 @@ def devicetag_image(csv_file, destination_folder, show_name):
                 if show_name:
                     qr_code_path = img_paths.pop(0)
                     img.paste(Image.open(qr_code_path), (20, 14))
-                    draw.text((140, 64), row[0], font=name_font, fill=(0, 0, 0))
+                    name_len = len(row[0])
+                    if name_len < 22:
+                        draw.text((130, 50), row[0], font=name_font, fill=(0, 0, 0))
+                    else:
+                        draw.text((130, 50), row[0][0:22], font=name_font, fill=(0, 0, 0))
+                        if name_len > 44:
+                            draw.text((130, 75), row[0][22:44], font=name_font, fill=(0, 0, 0))
+                        else:
+                            draw.text((130, 75), row[0][22:], font=name_font, fill=(0, 0, 0))
                 else:
                     qr_code_path = img_paths.pop(0)
                     img.paste(Image.open(qr_code_path), (70, 14))

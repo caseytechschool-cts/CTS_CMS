@@ -21,7 +21,6 @@ from fault_details_window import fault_details
 from . import student_name_tag_window
 from . import device_tag_window
 
-
 table_data = []
 filter_table_data = []
 window_all_devices = None
@@ -108,9 +107,15 @@ def delete_item_from_table(device_id):
 
 
 def stream_handler(message):
+    # print(message['event'], message['data'], message['path'])
     if message['event'] == 'put' and isinstance(message['data'], type(None)) and message['path'] != '/':
         document_id = message['path'][1:]
         delete_item_from_table(document_id)
+    elif message['event'] == 'put' and isinstance(message['data'], type(None)) and message['path'] == '/':
+        global table_data, filter_table_data
+        table_data = []
+        filter_table_data = []
+        window_all_devices.write_event_value('-table-delete-', 'all')
     elif message['event'] == 'patch' and isinstance(message['data'], dict):
         update_device(message['path'][1:], message['data'])
     elif message['event'] == 'put' and isinstance(message['data'], dict) and message['path'] != '/':
@@ -192,6 +197,10 @@ def show_device_list_window(user_auth):
         run_pending()
         if event == '-Thread-device-upload-':
             sg.popup_quick_message('Devices added successfully.')
+            result = sg.popup_ok_cancel('Do you want to generate device QR Code?',
+                                        title='Device QR Code', font=font_normal, icon=image_to_base64('logo.png'))
+            if result == 'OK':
+                device_tag_window.device_tag(csv_files=csv_file_path)
         if event == '-Thread-csv-download-':
             sg.popup_quick_message('Download completed! Check your Downloads folder.', auto_close_duration=1)
         if event == '-Thread-student-qrcode-':
@@ -271,6 +280,8 @@ def show_device_list_window(user_auth):
         if event == '-table-item-delete-' and values[event] == 'filter-table' and not show_main_table:
             window_all_devices['-all-devices-'].update(values=filter_table_data)
             sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1)
+        if event == '-table-delete-':
+            window_all_devices['-all-devices-'].update(values=table_data)
         if event == '-table-item-update-' and values[event] == 'full-table' and show_main_table:
             window_all_devices['-all-devices-'].update(values=table_data)
             sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
@@ -280,7 +291,8 @@ def show_device_list_window(user_auth):
         if event == '-table-item-added-':
             window_all_devices['-all-devices-'].update(values=table_data)
         if event == 'Download device list CSV file template':
-            with open(path.join(Path.home(), 'Downloads', 'device_list_csv_template.csv'), mode='w', newline='') as csvfile:
+            with open(path.join(Path.home(), 'Downloads', 'device_list_csv_template.csv'), mode='w',
+                      newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['Device name', 'device type', 'device sub-type', 'location'])
             sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1)

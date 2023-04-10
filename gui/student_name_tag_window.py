@@ -59,9 +59,10 @@ def student_name_tag():
         if event == 'Submit':
             window['-status-'].update(value='Generating ', visible=False)
             thread_name_tag_running = True
-            Thread(target=generate_name_tags,
-                   args=(values['-files-'], values['-dest-folder-'], values['-add-qr-code-'], values['-add-box-'],
-                         window)).start()
+            thread_name_tag = Thread(target=generate_name_tags,
+                                     args=(values['-files-'], values['-dest-folder-'], values['-add-qr-code-'],
+                                           values['-add-box-'],
+                                           window)).start()
         if thread_name_tag_running:
             window['-status-'].update(value=window['-status-'].get() + '.', visible=True)
         if event == '-thread-name-tags-' and values[event] == 'generated':

@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b02ec80b-0de1-42cd-aef8-70d7a3e824cf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSV/devices.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSV/devices.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/csv_files/csv_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/csv_files/csv_reader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/CURD.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/CURD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/device_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/device_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_tag_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/show_device_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/show_device_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nametag/doc_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/doc_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/student_name_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_name_tag_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nametag/nametags.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/nametags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nametag/tag_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/tag_generator.py" afterDir="false" />
     </list>
@@ -59,9 +56,9 @@
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\assets" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\gui" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\nametag" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\assets" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\security" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\source" />
     </key>

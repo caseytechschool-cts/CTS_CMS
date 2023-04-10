@@ -1,15 +1,15 @@
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
 from os import path
-from nametag.tag_generator import generate_name_tags
+from nametag.tag_generator import generate_device_tags
 from threading import Thread
 
 
-def device_tag():
+def device_tag(csv_files=''):
     sg.theme('Material1')
     col1_layout = [
         [sg.Text('Upload device csv file(s)')],
-        [sg.Input(key='-NAME-'),
+        [sg.Input(key='-NAME-', default_text=csv_files),
          sg.FilesBrowse(file_types=(("CSV Files", "*.csv"),), key='-files-', size=(len('Browse') + 5, 1))],
         [sg.Text('Choose a folder to save name tags')],
         [sg.Input(key='-dest-folder-'),
@@ -36,38 +36,32 @@ def device_tag():
     window = sg.Window('Device QR Code generator', layout, element_justification='l', keep_on_top=True,
                        icon=image_to_base64('logo.png'), finalize=True)
 
-    thread_name_tag = None
-    thread_name_tag_running = None
+    thread_device_tag = None
+    thread_device_tag_running = None
     while True:
         event, values = window.read(timeout=300)
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
-        # if values['-add-qr-code-'] and values['-add-box-']:
-        #     window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'qr_code_default.png')),
-        #                                      size=(360, 130))
-        # elif values['-add-box-'] and not values['-add-qr-code-']:
-        #     window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'qr_code_name_box.png')),
-        #                                      size=(360, 130))
-        # elif not values['-add-box-'] and values['-add-qr-code-']:
-        #     window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'qr_code_qr_name.png')),
-        #                                      size=(360, 130))
-        # else:
-        #     window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'qr_code_name_only.png')),
-        #                                      size=(360, 130))
-        # if event == 'Submit':
-        #     window['-status-'].update(value='Generating ', visible=False)
-        #     thread_name_tag_running = True
-        #     Thread(target=generate_name_tags,
-        #            args=(values['-files-'], values['-dest-folder-'], values['-add-qr-code-'], values['-add-box-'],
-        #                  window)).start()
-        # if thread_name_tag_running:
-        #     window['-status-'].update(value=window['-status-'].get() + '.', visible=True)
-        # if event == '-thread-name-tags-' and values[event] == 'generated':
-        #     window['-status-'].update(value='Generated successfully', visible=True)
-        #     thread_name_tag_running = None
+        if values['-add-device-name-']:
+            window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'device_tag_name.png')),
+                                             size=(240, 128))
+        else:
+            window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'device_tag.png')),
+                                             size=(240, 128))
+        if event == 'Submit':
+            window['-status-'].update(value='Generating ', visible=False)
+            thread_device_tag_running = True
+            thread_device_tag = Thread(target=generate_device_tags,
+                                       args=(values['-NAME-'], values['-dest-folder-'], values['-add-device-name-'],
+                                             window)).start()
+        if thread_device_tag_running:
+            window['-status-'].update(value=window['-status-'].get() + '.', visible=True)
+        if event == '-thread-device-tags-' and values[event] == 'generated':
+            window['-status-'].update(value='Generated successfully', visible=True)
+            thread_device_tag_running = None
 
-    if thread_name_tag is not None:
-        thread_name_tag.join()
+    if thread_device_tag is not None:
+        thread_device_tag.join()
     window.close()
 
 
