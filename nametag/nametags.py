@@ -49,3 +49,36 @@ def nametag_image(csv_file, destination_folder, show_qr_code, show_box):
                 count += 1
             else:
                 line_count += 1
+
+
+def devicetag_image(csv_file, destination_folder, show_name):
+    nametag_path = path.join(destination_folder, 'devicetag')
+    if path.exists(nametag_path):
+        shutil.rmtree(nametag_path)
+    makedirs(nametag_path)
+
+    img_paths = sorted(glob.glob(path.join(destination_folder, 'qrcode', '*.png')),
+                       key=lambda img_file: path.getmtime(img_file))
+    with open(csv_file) as file:
+        csv_data = csv.reader(file)
+        line_count = 0
+        count = 1
+        name_font = ImageFont.truetype("arial.ttf", 12)
+        for row in csv_data:
+            if line_count:
+                img = Image.new('RGBA', (240, 128), color=(255, 255, 255, 0))
+                draw = ImageDraw.Draw(img)
+                if show_name:
+                    qr_code_path = img_paths.pop(0)
+                    img.paste(Image.open(qr_code_path), (20, 14))
+                    draw.text((140, 64), row[0], font=name_font, fill=(0, 0, 0))
+                else:
+                    qr_code_path = img_paths.pop(0)
+                    img.paste(Image.open(qr_code_path), (70, 14))
+
+                image_file_name = f'image{count}.png'
+                img.save(path.join(nametag_path, image_file_name))
+                count += 1
+            else:
+                line_count += 1
+

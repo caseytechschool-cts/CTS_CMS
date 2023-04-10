@@ -1,3 +1,4 @@
+# https://www.cos.net.au/office-products/labels/Printec-General-Use-Labels-24-Per-Sheet-LABL5420
 import csv
 import os.path
 from firebase.CURD import add_device_to_database, remove_device_from_database
@@ -18,6 +19,7 @@ from device_modifier import modify_device
 from device_report import report_device
 from fault_details_window import fault_details
 from . import student_name_tag_window
+from . import device_tag_window
 
 
 table_data = []
@@ -189,7 +191,7 @@ def show_device_list_window(user_auth):
         event, values = window_all_devices.read(timeout=100)
         run_pending()
         if event == '-Thread-device-upload-':
-            sg.popup_quick_message('Devices added successfully\nQRcode generation done! Check your Downloads folder.')
+            sg.popup_quick_message('Devices added successfully.')
         if event == '-Thread-csv-download-':
             sg.popup_quick_message('Download completed! Check your Downloads folder.', auto_close_duration=1)
         if event == '-Thread-student-qrcode-':
@@ -251,13 +253,15 @@ def show_device_list_window(user_auth):
             show_main_screen()
         if event == 'Student name tag':
             student_name_tag_window.student_name_tag()
+        if event == 'Device QR Code tag':
+            device_tag_window.device_tag()
         if event == 'Devices':
-            csv_file_path = sg.popup_get_file(message='Upload device csv file', title='File uploader',
+            csv_file_path = sg.popup_get_file(message='Upload device csv file(s)', title='Device file uploader',
                                               font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
-                                              icon=image_to_base64('logo.png'))
+                                              icon=image_to_base64('logo.png'), multiple_files=True)
             if csv_file_path:
                 thread_device_upload = Thread(target=add_device_to_database,
-                                              args=(window_all_devices, csv_file_path, idToken, False))
+                                              args=(window_all_devices, csv_file_path, idToken))
                 thread_device_upload.start()
         if event == 'Update account':
             pass

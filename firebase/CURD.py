@@ -7,34 +7,31 @@ from qr_code.qrcode_generator import create_qrcode
 from pathlib import Path
 
 
-def add_device_to_database(window, filename: str, idToken=None, default=True) -> None:
-    if default:
-        dir_path = path.join('../CSV', filename)
-        qr_save_path = path.join('../QRCode', 'device')
-        makedirs(qr_save_path, exist_ok=True)
-    else:
-        dir_path = filename
-        qr_save_path = path.join(Path.home(), 'Downloads', 'Devices QRcode')
-        makedirs(qr_save_path, exist_ok=True)
-
-    with open(dir_path) as devices:
-        csv_data = csv.reader(devices)
-        line_count = 0
-        for row in csv_data:
-            if line_count:
-                device_data = {
-                    "name": row[0],
-                    "device_type": row[1],
-                    "device_sub_type": row[2],
-                    "isFaulty": False,
-                    "location": row[3]
-                }
-                device_id = db.child('devices').push(device_data, token=idToken)
-                device_data['id'] = device_id['name']
-                create_qrcode(device_data, f"{device_data['name']} {device_data['id']}", 'device', qr_save_path)
-
-            else:
-                line_count = 1
+def add_device_to_database(window, csv_files, idToken):
+    csv_file_paths = csv_files.split(';')
+    for dir_path in csv_file_paths:
+        with open(dir_path) as devices:
+            csv_data = csv.reader(devices)
+            line_count = 0
+            all_rows = []
+            for row in csv_data:
+                if line_count:
+                    device_data = {
+                        "name": row[0],
+                        "device_type": row[1],
+                        "device_sub_type": row[2],
+                        "isFaulty": False,
+                        "location": row[3]
+                    }
+                    device_id = db.child('devices').push(device_data, token=idToken)
+                    row.append(str(device_id['name']))
+                else:
+                    line_count = 1
+                    row.append('device_id')
+                all_rows.append(row)
+        with open(dir_path, 'w', newline='') as csv_device:
+            writer = csv.writer(csv_device)
+            writer.writerows(all_rows)
     window.write_event_value('-Thread-device-upload-', 'done')
 
 

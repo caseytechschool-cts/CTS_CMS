@@ -17,7 +17,7 @@ def default_menu():
 def login_menu():
     menu_login = [
         ['&File', ['Borrowed device list', 'Download device list CSV file template', '---', 'E&xit']],
-        ['&Create', ['Student name tag']],
+        ['&Create', ['Student name tag', 'Device QR Code tag']],
         ['Add', ['Devices']],
         ['&Help', ['&About...']],
         ['My account', ['Logout']]

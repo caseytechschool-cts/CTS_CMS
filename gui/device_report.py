@@ -43,7 +43,7 @@ def thread_email(to, fpath, description, device_details):
     device_location = device_details[4]
     mail.HTMLBody = r"""
     Dear Admin,<br><br>
-    The following information is added to the faulty device list:<br><br>
+    The following information is added to the faulty device list.<br><br>
     Fault details: <br><br>
     {0}<br><br>
     <img src="cid:device_img" alt="faulty device image" width="400" height="auto"><br><br>
