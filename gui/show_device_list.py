@@ -300,7 +300,7 @@ def show_device_list_window(user_auth):
             with open(path.join(Path.home(), 'Downloads', 'student_booking_csv_template.csv'), mode='w',
                       newline='') as csvfile:
                 writer = csv.writer(csvfile)
-                writer.writerow(['Email', 'FirstName', 'LastName', 'Preferred name (if any), Role (student/teacher)'])
+                writer.writerow(['Email', 'FirstName', 'LastName', 'Preferred name (if any)', 'Role (student/teacher)'])
             sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1)
 
     if thread_device_upload is not None:
