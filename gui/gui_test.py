@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 from student_tab_layout import borrow_and_return_page_layout
-from borrowed_devices_list_layout import borrowed_devices_tab_layout
+from borrower_list_window import borrowed_devices_tab_layout
 from helper_lib.base64image import image_to_base64
 from menu import default_menu
 from qr_code.qrcode_reader import read_student_qrcode_from_webcam, read_device_qrcode_from_webcam, return_device_qrcode_webcam
