@@ -14,16 +14,31 @@ def csv_student_reader(filepath, destination_folder):
         csv_data = csv.reader(file)
         line_count = 0
         count = 1
-        for _ in csv_data:
+        all_rows = []
+        add_student_id = True
+        for row in csv_data:
             if line_count:
                 student = {
                     "id": str(uuid.uuid4()),
+                    "role": row[4]
                 }
                 qr_file_name = f"qrcode_{count}"
                 create_qrcode(student, qr_file_name, qr_code_path)
                 count += 1
+                if add_student_id:
+                    row.append(student['id'])
             else:
                 line_count += 1
+                if 'id' in row:
+                    add_student_id = False
+                else:
+                    row.append('id')
+            if add_student_id:
+                all_rows.append(row)
+    if add_student_id:
+        with open(filepath, 'w', newline='') as csv_student:
+            writer = csv.writer(csv_student)
+            writer.writerows(all_rows)
 
 
 def csv_device_reader(filepath, destination_folder):
