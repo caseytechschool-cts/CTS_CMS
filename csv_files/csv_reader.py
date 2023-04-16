@@ -20,7 +20,7 @@ def csv_student_reader(filepath, destination_folder):
             if line_count:
                 student = {
                     "id": str(uuid.uuid4()),
-                    "role": row[4]
+                    "role": row[4].lower()
                 }
                 qr_file_name = f"qrcode_{count}"
                 create_qrcode(student, qr_file_name, qr_code_path)

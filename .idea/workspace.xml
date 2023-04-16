@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b02ec80b-0de1-42cd-aef8-70d7a3e824cf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/borrowed_devices_list_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/borrower_list_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/gui_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/gui_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/csv_files/csv_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/csv_files/csv_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/borrower_list_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/borrower_list_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
