@@ -73,7 +73,7 @@ def show_main_screen():
             window_login_in.set_title('Sign up page')
         if event == '-sign-up-now-':
             create_user(values['-username-signup-'], values['-password-signup-'])
-            print('done')
+            # print('done')
             window_login_in['-login-screen-'].update(visible=True)
             window_login_in['-signup-screen-'].update(visible=False)
 
