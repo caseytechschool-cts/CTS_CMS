@@ -21,6 +21,7 @@ from device_report import report_device
 from fault_details_window import fault_details
 from . import student_name_tag_window
 from . import device_tag_window
+from . import borrower_list_window
 from constant.global_info import *
 
 table_data = []
@@ -311,6 +312,8 @@ def show_device_list_window(user_auth):
                 writer.writerow(['Email', 'FirstName', 'LastName', 'Preferred name (if any)', 'Role (student/teacher)'])
             sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1,
                                    font=font_normal)
+        if event == 'Borrowed device list':
+            borrower_list_window.borrowed_devices_window(idToken)
 
     if thread_device_upload is not None:
         thread_device_upload.join()
