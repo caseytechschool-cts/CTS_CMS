@@ -2,6 +2,7 @@ import json
 import PySimpleGUI as sg
 import login_screen_layout
 from helper_lib.base64image import image_to_base64
+from helper_lib.pathmaker import resource_path
 from security import generate_key
 from pathlib import Path
 from cryptography.fernet import Fernet
@@ -9,6 +10,7 @@ import os
 from firebase import user_log_in
 from firebase.manage_user import password_reset, create_user
 from gui import show_device_list
+from constant.global_info import *
 
 
 def show_main_screen():
@@ -25,15 +27,16 @@ def show_main_screen():
                                 layout=login_screen_layout.layout_mixer_auth(f),
                                 size=(800, 600),
                                 margins=(20, 20),
-                                icon=image_to_base64('logo.png'),
+                                icon=image_to_base64(resource_path(os.path.join('../assets', 'logo.png'))),
                                 alpha_channel=1.0,
-                                finalize=True)
+                                finalize=True,
+                                font=font_normal)
 
     window_login_in['-reset-password-username-'].bind('<Return>', '_Enter')
     window_login_in['-password-'].bind('<Return>', '_Enter')
     while True:
-        event, values = window_login_in.read()
-        print(event)
+        event, values = window_login_in.read(timeout=100)
+        # print(event)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
 
@@ -43,10 +46,10 @@ def show_main_screen():
             window_login_in['-password-'].update(password_char='*')
         if event == '-sign-in-' or event == '-password-' + '_Enter':
             if values['-remember-me-']:
-                with open('../security/uname', 'wb') as username:
+                with open(os.path.join('../security', 'uname'), 'wb') as username:
                     user_name = f.encrypt(bytes(values['-username-'], encoding='utf8'))
                     username.write(user_name)
-                with open('../security/pword', 'wb') as userpass:
+                with open(os.path.join('../security', 'pword'), 'wb') as userpass:
                     password = f.encrypt(bytes(values['-password-'], encoding='utf8'))
                     userpass.write(password)
             if values['-forget-me-']:

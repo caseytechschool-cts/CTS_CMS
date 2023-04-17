@@ -1,11 +1,13 @@
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
+from helper_lib.pathmaker import resource_path
 from firebase.config import *
 from PIL import Image
 import io
 import json
 from datetime import datetime
 from os import path
+from constant.global_info import *
 
 
 def resize_image(filepath, max_size=300):
@@ -13,7 +15,7 @@ def resize_image(filepath, max_size=300):
     width, height = image.size
     if width > height:
         new_width = max_size
-        new_height = int(max_size * height/width)
+        new_height = int(max_size * height / width)
     else:
         new_height = max_size
         new_width = int(max_size * width / height)
@@ -29,20 +31,21 @@ def fault_details(selected_device_id, idToken):
     storage.child(f'/{selected_device_id}.png').download(path='/', filename='download.png', token=idToken)
     description = db.child('faulty_devices').child(selected_device_id).get(token=idToken).val()
     layout = [[sg.Push(), sg.Image(data=resize_image('download.png')), sg.Push()],
-              [sg.Text('Fault details')],
+              [sg.Text('Fault details', font=font_normal)],
               [sg.Push(), sg.Multiline(key='-description-', expand_x=True, default_text=description['description'],
-                                       size=(100, 10), autoscroll=True, disabled=True), sg.Push()],
-              [sg.Text('Add update')],
-              [sg.Input(key='-updates-', expand_x=True)],
-              [sg.Push(), sg.Button(button_text='Add update', key='-add-update-'), sg.Push()],
+                                       size=(100, 10), autoscroll=True, disabled=True, font=font_normal), sg.Push()],
+              [sg.Text('Add update', font=font_normal)],
+              [sg.Input(key='-updates-', expand_x=True, font=font_normal)],
+              [sg.Push(), sg.Button(button_text='Add update', key='-add-update-', font=font_normal), sg.Push()],
               ]
 
     window = sg.Window('Fault details', layout, keep_on_top=True,
-                       icon=image_to_base64('logo.png'), finalize=True)
+                       icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))), finalize=True,
+                       font=font_normal)
 
     msg = ''
     while True:
-        event, values = window.read()
+        event, values = window.read(timeout=100)
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
         if event == '-add-update-':
@@ -56,6 +59,6 @@ def fault_details(selected_device_id, idToken):
                 "description": msg + values['-updates-'] + '\n\n' + description['description']
             }
             db.child('faulty_devices').child(selected_device_id).update(data=faulty_device_data, token=idToken)
-            sg.popup_quick_message('Fault updates added successfully', auto_close_duration=1)
+            sg.popup_quick_message('Fault updates added successfully', auto_close_duration=1, font=font_normal)
             break
     window.close()

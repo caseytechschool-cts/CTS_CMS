@@ -1,14 +1,11 @@
 import PySimpleGUI as sg
 import os
 import json
-
-font_underline = ('Century Gothic', 10, 'underline')
-font_normal = ('Century Gothic', 10, '')
+from constant.global_info import *
 
 
 def file_exist(filename, f=None):
     if os.path.exists(os.path.join('../security', filename)):
-        # print(filename)
         with open(os.path.join('../security', filename)) as file:
             user_name = f.decrypt(file.read())
             return user_name.decode()
@@ -25,7 +22,7 @@ def login_screen_layout(f):
 
     login_screen_components = [
         [sg.Push(background_color='white'),
-         sg.Text(text='Login to CTS CMS', background_color='white', font=('Century Gothic', 16, ''),
+         sg.Text(text='Login to CTS CMS', background_color='white', font=font_heading,
                  pad=((10, 10), (20, 10))),
          sg.Push(background_color='white')],
         [sg.Text(text='', background_color='white', font=font_normal,
@@ -35,8 +32,7 @@ def login_screen_layout(f):
                   default_text=user_name_value)],
         [sg.Text(text='Password:', background_color='white', font=font_normal, pad=((10, 10), (10, 0)))],
         [sg.Input(key='-password-', password_char='*', background_color='#f5f7fb', font=font_normal,
-                  pad=((10, 10), (10, 0)),
-                  default_text=password_value)],
+                  pad=((10, 10), (10, 0)), default_text=password_value)],
         [sg.Checkbox(text='Show Password', key='-show-password-', background_color='white', font=font_normal,
                      pad=((10, 10), (10, 0)), default=False, enable_events=True)],
         [sg.Checkbox(text='Remember me', key='-remember-me-', background_color='white', font=font_normal,
@@ -44,7 +40,7 @@ def login_screen_layout(f):
          sg.Checkbox(text='Forget me', key='-forget-me-', background_color='white', font=font_normal,
                      pad=((10, 10), (10, 0)), default=False, enable_events=True)
          ],
-        [sg.Button(button_text='SIGN IN NOW', key='-sign-in-', expand_x=True, font=('Century Gothic', 14, 'bold'),
+        [sg.Button(button_text='SIGN IN NOW', key='-sign-in-', expand_x=True, font=account_button_font,
                    pad=((10, 10), (20, 0)))],
         [sg.Text(text='Forgot Password?', font=font_underline, key='-forgot-', background_color='white',
                  pad=((10, 10), (10, 0)), enable_events=True)],
@@ -58,7 +54,7 @@ def login_screen_layout(f):
 def signup_screen_layout():
     signup_screen_components = [
         [sg.Push(background_color='white'),
-         sg.Text(text='Sign up to CTS CMS', background_color='white', font=('Century Gothic', 16, ''),
+         sg.Text(text='Sign up to CTS CMS', background_color='white', font=font_heading,
                  pad=((10, 10), (20, 10))),
          sg.Push(background_color='white')],
         [sg.Text(text='Email:', background_color='white', font=font_normal, pad=((10, 10), (10, 0)))],
@@ -66,7 +62,7 @@ def signup_screen_layout():
         [sg.Text(text='Password:', background_color='white', font=font_normal, pad=((10, 10), (10, 0)))],
         [sg.Input(key='-password-signup-', password_char='*', background_color='#f5f7fb', font=font_normal,
                   pad=((10, 10), (10, 0)))],
-        [sg.Button(button_text='SIGN UP NOW', key='-sign-up-now-', expand_x=True, font=('Century Gothic', 14, 'bold'),
+        [sg.Button(button_text='SIGN UP NOW', key='-sign-up-now-', expand_x=True, font=account_button_font,
                    pad=((10, 10), (20, 20)))],
         [sg.Text(text='Already have an account? Login here', font=font_underline, background_color='white',
                  pad=((10, 10), (10, 20)), key='-sign-up-to-log-in-', enable_events=True)]
@@ -78,7 +74,7 @@ def signup_screen_layout():
 def reset_password_function():
     reset_password_components = [
         [sg.Push(background_color='white'), sg.Text(text='Reset password', background_color='white',
-                                                    font=('Century Gothic', 16, ''), pad=((10, 10), (20, 10))),
+                                                    font=font_heading, pad=((10, 10), (20, 10))),
          sg.Push(background_color='white')],
         [sg.Text(text='', background_color='white', font=font_normal,
                  pad=((10, 10), (10, 0)), key='-reset-error-', text_color='red', visible=False)],
@@ -86,7 +82,7 @@ def reset_password_function():
         [sg.Input(key='-reset-password-username-', background_color='#f5f7fb', font=font_normal,
                   pad=((10, 10), (10, 0)), do_not_clear=False)],
         [sg.Button(button_text='Reset password', key='-reset-password-', expand_x=True,
-                   font=('Century Gothic', 14, 'bold'),
+                   font=account_button_font,
                    pad=((10, 10), (20, 20)))],
         [sg.Text(text='Check your email for the reset link', background_color='white', visible=False,
                  pad=((10, 10), (10, 10)), key='-reset-msg-', font=font_normal)],

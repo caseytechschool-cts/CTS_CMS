@@ -5,6 +5,7 @@ from firebase.CURD import add_device_to_database, remove_device_from_database
 from firebase.config import *
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
+from helper_lib.pathmaker import resource_path
 from helper_lib.search import search_devices
 from thread_functions import save_device_list
 from os import path
@@ -20,6 +21,7 @@ from device_report import report_device
 from fault_details_window import fault_details
 from . import student_name_tag_window
 from . import device_tag_window
+from constant.global_info import *
 
 table_data = []
 filter_table_data = []
@@ -126,8 +128,6 @@ def stream_handler(message):
 
 table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
 col_map = [False, True, True, True, True, True]
-font_underline = ('Century Gothic', 10, 'underline')
-font_normal = ('Century Gothic', 10, '')
 user = None
 
 
@@ -154,23 +154,24 @@ def show_device_list_window(user_auth):
         [sg.Menu(login_menu(), key='-menu-', background_color='white')],
         [sg.Push(), sg.ButtonMenu('  Download  ', menu_def=['Download', ['Download all::-download-all-',
                                                                          'Download selected::-download-selected-']],
-                                  key='-download-device-list-', background_color='white', pad=header_padding),
-         sg.Input(default_text='', key='-filter-query-', do_not_clear=True, pad=header_padding),
-         sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding),
+                                  key='-download-device-list-', background_color='white', pad=header_padding,
+                                  font=font_normal),
+         sg.Input(default_text='', key='-filter-query-', do_not_clear=True, pad=header_padding, font=font_normal),
+         sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding, font=font_normal),
          sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
-                   pad=header_padding),
+                   pad=header_padding, font=font_normal),
          sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False,
-                   button_color='#fcb116', pad=header_padding),
+                   button_color='#fcb116', pad=header_padding, font=font_normal),
          sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260',
-                   pad=header_padding),
+                   pad=header_padding, font=font_normal),
          sg.Button(button_text='   Fault details   ', pad=header_padding, key='-fault-details-', visible=False,
-                   button_color='#ff696a'),
+                   button_color='#ff696a', font=font_normal),
          sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False,
-                   button_color='#2db52c'), sg.Push()],
+                   button_color='#2db52c',font=font_normal), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
                   auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map,
-                  display_row_numbers=True,
+                  display_row_numbers=True, font=font_normal,
                   select_mode=sg.TABLE_SELECT_MODE_BROWSE)],
         [sg.Sizegrip()]
     ]
@@ -182,9 +183,10 @@ def show_device_list_window(user_auth):
     window_all_devices = sg.Window(title="CTS CMS",
                                    layout=layout_all_devices,
                                    size=(max_width, max_height),
-                                   icon=image_to_base64('logo.png'),
+                                   icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
                                    finalize=True,
-                                   resizable=True)
+                                   resizable=True,
+                                   font=font_normal)
 
     window_all_devices['-filter-query-'].bind('<Return>', '_Enter')
 
@@ -196,21 +198,25 @@ def show_device_list_window(user_auth):
         event, values = window_all_devices.read(timeout=100)
         run_pending()
         if event == '-Thread-device-upload-':
-            sg.popup_quick_message('Devices added successfully.')
+            sg.popup_quick_message('Devices added successfully.', font=font_normal)
             result = sg.popup_ok_cancel('Do you want to generate device QR Code?',
-                                        title='Device QR Code', font=font_normal, icon=image_to_base64('logo.png'))
+                                        title='Device QR Code', font=font_normal,
+                                        icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))))
             if result == 'OK':
                 device_tag_window.device_tag(csv_files=csv_file_path)
         if event == '-Thread-csv-download-':
-            sg.popup_quick_message('Download completed! Check your Downloads folder.', auto_close_duration=1)
+            sg.popup_quick_message('Download completed! Check your Downloads folder.', auto_close_duration=1,
+                                   font=font_normal)
         if event == '-Thread-student-qrcode-':
-            sg.popup_quick_message('QRcode generation completed! Check your Downloads folder.', auto_close_duration=1)
+            sg.popup_quick_message('QRcode generation completed! Check your Downloads folder.', auto_close_duration=1,
+                                   font=font_normal)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == '-delete-device-button-':
             result = sg.popup_ok_cancel(
                 'Are you sure you want to delete this device? This action will remove it completely.',
-                title='Delete device', font=font_normal, icon=image_to_base64('logo.png'))
+                title='Delete device', font=font_normal,
+                icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))))
             if result == 'OK':
                 remove_device_from_database(selected_device[0], idToken)
         if event == '-download-device-list-':
@@ -267,7 +273,8 @@ def show_device_list_window(user_auth):
         if event == 'Devices':
             csv_file_path = sg.popup_get_file(message='Upload device csv file(s)', title='Device file uploader',
                                               font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
-                                              icon=image_to_base64('logo.png'), multiple_files=True)
+                                              icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
+                                              multiple_files=True)
             if csv_file_path:
                 thread_device_upload = Thread(target=add_device_to_database,
                                               args=(window_all_devices, csv_file_path, idToken))
@@ -276,18 +283,18 @@ def show_device_list_window(user_auth):
             pass
         if event == '-table-item-delete-' and values[event] == 'full-table' and show_main_table:
             window_all_devices['-all-devices-'].update(values=table_data)
-            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1)
+            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1, font=font_normal)
         if event == '-table-item-delete-' and values[event] == 'filter-table' and not show_main_table:
             window_all_devices['-all-devices-'].update(values=filter_table_data)
-            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1)
+            sg.popup_quick_message('Device deleted successfully.', auto_close_duration=1, font=font_normal)
         if event == '-table-delete-':
             window_all_devices['-all-devices-'].update(values=table_data)
         if event == '-table-item-update-' and values[event] == 'full-table' and show_main_table:
             window_all_devices['-all-devices-'].update(values=table_data)
-            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
+            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1, font=font_normal)
         if event == '-table-item-update-' and values[event] == 'filter-table' and not show_main_table:
             window_all_devices['-all-devices-'].update(values=filter_table_data)
-            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1)
+            sg.popup_quick_message('Device updated successfully.', auto_close_duration=1, font=font_normal)
         if event == '-table-item-added-':
             window_all_devices['-all-devices-'].update(values=table_data)
         if event == 'Download device list CSV file template':
@@ -295,13 +302,15 @@ def show_device_list_window(user_auth):
                       newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['Device name', 'device type', 'device sub-type', 'location'])
-            sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1)
+            sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1,
+                                   font=font_normal)
         if event == 'Download student booking CSV file template':
             with open(path.join(Path.home(), 'Downloads', 'student_booking_csv_template.csv'), mode='w',
                       newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['Email', 'FirstName', 'LastName', 'Preferred name (if any)', 'Role (student/teacher)'])
-            sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1)
+            sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1,
+                                   font=font_normal)
 
     if thread_device_upload is not None:
         thread_device_upload.join()

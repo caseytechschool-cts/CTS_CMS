@@ -2,7 +2,6 @@ from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
 import glob
 from os import path, makedirs
-from docx import Document
 import uuid
 import shutil
 from docx2pdf import convert
@@ -23,7 +22,7 @@ def create_doc_with_name_tags(folder_path):
             num_of_passes += 1
 
     for i in range(num_of_passes):
-        doc = DocxTemplate(path.abspath('../gui/template_with_tags.docx'))
+        doc = DocxTemplate(path.join('../gui', 'template_with_tags.docx'))
         image_list = []
         for j in range(image_start_location, image_end_location):
             image_obj = InlineImage(doc, name_tag_image_path[j], width=Mm(95), height=Mm(35))
@@ -78,7 +77,7 @@ def create_doc_with_device_tags(folder_path):
             num_of_passes += 1
 
     for i in range(num_of_passes):
-        doc = DocxTemplate(path.abspath('../gui/template_device_tags.docx'))
+        doc = DocxTemplate(path.join('../gui', 'template_device_tags.docx'))
         image_list = []
         for j in range(image_start_location, image_end_location):
             image_obj = InlineImage(doc, device_tag_image_path[j], width=Mm(63.5), height=Mm(33.87))

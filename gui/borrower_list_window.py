@@ -4,11 +4,11 @@ import json
 import csv
 from os import path, remove
 from helper_lib.search import search_devices
+from helper_lib.pathmaker import resource_path
 import ast
+from constant.global_info import *
 
 
-font_underline = ('Century Gothic', 10, 'underline')
-font_normal = ('Century Gothic', 10, '')
 table_heading = ['Device ID', 'Borrower name', 'Borrower role', 'Device name']
 table_data = []
 filter_table_data = []
@@ -121,20 +121,18 @@ def borrowed_devices_window(idToken=None):
     if path.exists(path.join('../csv_files', 'booking.json')):
         with open(path.join('../csv_files', 'booking.json')) as f:
             json_data = json.load(f)
-    student_id_to_data()
+    # student_id_to_data()
     layout = [
         [sg.Push(), sg.Text(text='Choose the current student booking csv file(s) for student details',
                             font=font_normal, key='-msg-', visible=True), sg.Push()],
-        [sg.Push(), sg.Input(default_text='', key='-booking-files-', visible=True),
+        [sg.Push(), sg.Input(default_text='', key='-booking-files-', visible=True, font=font_normal),
          sg.FilesBrowse(key='-files-', file_types=(('CSV Files', '*.csv'),), visible=True), sg.Push()],
-        [sg.Push(), sg.ButtonMenu('  Choose option  ', menu_def=['Options', ['Student::-student-', 'Staff::-staff-']],
-                                  key='-choose-option-', background_color='white', pad=header_padding),
-         sg.Input(default_text='', key='-filter-people-', do_not_clear=True, pad=header_padding),
-         sg.Button(button_text='  Filter  ', key='-filter-people-button-', pad=header_padding),
+        [sg.Push(), sg.Input(default_text='', key='-filter-people-', do_not_clear=True, pad=header_padding, font=font_normal),
+         sg.Button(button_text='  Filter  ', key='-filter-people-button-', pad=header_padding, font=font_normal),
          sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-borrower-list-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
-                  auto_size_columns=True, vertical_scroll_only=False, display_row_numbers=True,
+                  auto_size_columns=True, vertical_scroll_only=False, display_row_numbers=True, font=font_normal,
                   visible_column_map=[False, True, True, True])],
         [sg.Sizegrip()]
     ]
@@ -146,20 +144,25 @@ def borrowed_devices_window(idToken=None):
     window_borrower_list = sg.Window(title="CTS CMS",
                                      layout=layout,
                                      size=(max_width, max_height),
-                                     icon=image_to_base64('logo.png'),
+                                     icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
                                      finalize=True,
-                                     resizable=True)
+                                     resizable=True,
+                                     font=font_normal)
 
     window_borrower_list['-filter-people-'].bind('<Return>', '_Enter')
 
     while True:
-        event, values = window_borrower_list.read(timeout=300)
+        event, values = window_borrower_list.read(timeout=100)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if path.exists(path.join('../csv_files', 'booking.json')):
+            window_borrower_list['-borrower-list-'].update(visible=True)
             window_borrower_list['-msg-'].update(visible=False)
             window_borrower_list['-booking-files-'].update(visible=False)
             window_borrower_list['-files-'].update(visible=False)
+        else:
+            window_borrower_list['-borrower-list-'].update(visible=False)
+            # my_stream.close()
         if values['-booking-files-']:
             student_csv_files = values['-booking-files-']
             window_borrower_list['-booking-files-'].update(value=None)

@@ -1,30 +1,33 @@
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
+from helper_lib.pathmaker import resource_path
 from os import path
 from nametag.tag_generator import generate_device_tags
 from threading import Thread
+from constant.global_info import *
 
 
 def device_tag(csv_files=''):
     sg.theme('Material1')
     col1_layout = [
-        [sg.Text('Upload device csv file(s)')],
-        [sg.Input(key='-NAME-', default_text=csv_files),
+        [sg.Text('Upload device csv file(s)', font=font_normal)],
+        [sg.Input(key='-NAME-', default_text=csv_files, font=font_normal),
          sg.FilesBrowse(file_types=(("CSV Files", "*.csv"),), key='-files-', size=(len('Browse') + 5, 1))],
-        [sg.Text('Choose a folder to save name tags')],
-        [sg.Input(key='-dest-folder-'),
-         sg.FolderBrowse('Choose a folder', key='-dest-folder-', enable_events=True)],
-        [sg.Text('Choose options:')],
-        [sg.Checkbox(text='Add device name', key='-add-device-name-', default=True,
+        [sg.Text('Choose a folder to save name tags', font=font_normal)],
+        [sg.Input(key='-dest-folder-', font=font_normal),
+         sg.FolderBrowse('Choose a folder', key='-dest-folder-', enable_events=True, font=font_normal)],
+        [sg.Text('Choose options:', font=font_normal)],
+        [sg.Checkbox(text='Add device name', key='-add-device-name-', default=True, font=font_normal,
                      enable_events=True)],
-        [sg.Push(), sg.Button(button_color='#2db52c', button_text='Submit', size=(len('Submit') + 5, 1)),
-         sg.Cancel(size=(len('Cancel') + 5, 1)), sg.Push()],
+        [sg.Push(), sg.Button(button_color='#2db52c', button_text='Submit', size=(len('Submit') + 5, 1),
+                              font=font_normal),
+         sg.Cancel(size=(len('Cancel') + 5, 1), font=font_normal), sg.Push()],
         [sg.HSeparator(color='#808080', pad=((0, 0), (20, 10)))],
-        [sg.Text(text='Generating ', key='-status-', text_color='#808080', visible=False)]
+        [sg.Text(text='Generating ', key='-status-', text_color='#808080', visible=False, font=font_normal)]
     ]
     col2_layout = [
         [sg.VPush()],
-        [sg.Text('Sample device QR Code tag')],
+        [sg.Text('Sample device QR Code tag', font=font_normal)],
         [sg.Image(key='-example-image-')],
         [sg.VPush()]
     ]
@@ -34,7 +37,8 @@ def device_tag(csv_files=''):
     ]
 
     window = sg.Window('Device QR Code generator', layout, element_justification='l', keep_on_top=True,
-                       icon=image_to_base64('logo.png'), finalize=True)
+                       icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
+                       finalize=True, font=font_normal)
 
     thread_device_tag = None
     thread_device_tag_running = None
@@ -43,10 +47,10 @@ def device_tag(csv_files=''):
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
         if values['-add-device-name-']:
-            window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'device_tag_name.png')),
+            window['-example-image-'].update(source=image_to_base64(resource_path(path.join('../assets', 'device_tag_name.png'))),
                                              size=(240, 128))
         else:
-            window['-example-image-'].update(source=image_to_base64(path.join('../assets', 'device_tag.png')),
+            window['-example-image-'].update(source=image_to_base64(resource_path(path.join('../assets', 'device_tag.png'))),
                                              size=(240, 128))
         if event == 'Submit':
             window['-status-'].update(value='Generating ', visible=False)

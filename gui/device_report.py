@@ -1,12 +1,13 @@
 import PySimpleGUI as sg
 from firebase.config import *
 from helper_lib.base64image import image_to_base64
+from helper_lib.pathmaker import resource_path
 from datetime import datetime
 import json
 from os import path
 from threading import Thread
 import win32com.client as win32
-from fault_details_window import resize_image
+from constant.global_info import *
 
 
 def thread_device_report(description, selected_device, idToken, fpath, window):
@@ -61,15 +62,17 @@ def thread_email(to, fpath, description, device_details):
 
 def report_device(selected_device, idToken):
     sg.theme('Material1')
-    layout = [[sg.Text('Brief description of the problem')],
-              [sg.Multiline(key='-description-', expand_x=True, size=(100, 5), autoscroll=True)],
-              [sg.Push(), sg.Text('Add images'), sg.Input(key='-path-'), sg.FileBrowse(), sg.Push()],
-              [sg.Push(), sg.Button(button_color='#fcb116', button_text='Submit'), sg.Cancel(), sg.Push()],
-              [sg.Text('Please upload a png or jpeg image file', key='-warning-', visible=False)]
+    layout = [[sg.Text('Brief description of the problem', font=font_normal)],
+              [sg.Multiline(key='-description-', expand_x=True, size=(100, 5), autoscroll=True, font=font_normal)],
+              [sg.Push(), sg.Text('Add images', font=font_normal), sg.Input(key='-path-', font=font_normal),
+               sg.FileBrowse(), sg.Push()],
+              [sg.Push(), sg.Button(button_color='#fcb116', button_text='Submit', font=font_normal),
+               sg.Cancel(font=font_normal), sg.Push()],
+              [sg.Text('Please upload a png or jpeg image file', key='-warning-', visible=False, font=font_normal)]
               ]
 
-    window = sg.Window('Report as faulty', layout, element_justification='l', keep_on_top=True,
-                       icon=image_to_base64('logo.png'), finalize=True)
+    window = sg.Window('Report as faulty', layout, element_justification='l', keep_on_top=True, font=font_normal,
+                       icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))), finalize=True)
 
     thread_device = None
     thread_send_email = None
@@ -90,12 +93,13 @@ def report_device(selected_device, idToken):
                 else:
                     window['-warning-'].update(visible=True)
         if event == '-thread-device-report-' and values[event] == 'done':
-            sg.popup_quick_message('Device reported successfully as faulty!', auto_close_duration=1)
-            button = sg.popup_ok_cancel('Do you want to send any email to report the fault?', keep_on_top=True)
+            sg.popup_quick_message('Faulty device reported successfully!', auto_close_duration=1)
+            button = sg.popup_ok_cancel('Do you want to send an email to report the fault?', keep_on_top=True,
+                                        font=font_normal)
             if button == 'Cancel':
                 break
             else:
-                thread_send_email = Thread(target=thread_email, args=('sm.abdullah@chisholm.edu.au', values['-path-'],
+                thread_send_email = Thread(target=thread_email, args=(EMAIL_TO, values['-path-'],
                                                                       values['-description-'], selected_device)).start()
                 break
 
