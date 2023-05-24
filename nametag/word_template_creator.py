@@ -1,7 +1,8 @@
 from docx import Document
+from os import path
 
 # Load the Word template file
-doc = Document('template.docx')
+doc = Document(path.join('data', 'template.docx'))
 
 # Get the first table in the document (assuming the template has a single table)
 table = doc.tables[0]
@@ -29,4 +30,4 @@ for row in table.rows:
     row_count += 1
 
 # Save the modified Word template file
-doc.save('template_with_tags.docx')
+doc.save(path.join('data', 'template_with_tags.docx'))

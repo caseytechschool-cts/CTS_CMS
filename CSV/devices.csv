@@ -1,30 +1,30 @@
-﻿Device name,device type,device sub-type,location,device_id
-Dell laptop 1,electronics,laptop,CTS,-NSf-1AjixBR6ALxjKly
-Dell laptop 2,electronics,laptop,CTS,-NSf-1CROd-DY9078KyY
-Dell laptop 3,electronics,laptop,CTS,-NSf-1E7f5gcPeukb53k
-Dell laptop 4,electronics,laptop,CTS,-NSf-1Ff6uqfFejHWvcu
-Dell laptop 5,electronics,laptop,CTS,-NSf-1HF33gk66JWJEvF
-Dell laptop 6,electronics,laptop,CTS,-NSf-1It8pWpUx17IMgu
-Dell laptop 7,electronics,laptop,CTS,-NSf-1KRUfGI7YgareoQ
-Dell laptop 8,electronics,laptop,CTS,-NSf-1M-EPzKK980b3nW
-Dell laptop 9,electronics,laptop,CTS,-NSf-1NbIxLdWOY-s1Ne
-Dell laptop 10,electronics,laptop,CTS,-NSf-1PASqduZOE_oI_z
-Dell laptop 11,electronics,laptop,CTS,-NSf-1Qh2v99-32DQdFa
-Dell laptop 12,electronics,laptop,CTS,-NSf-1SJKcMfbW5xPVBM
-Dell laptop 13,electronics,laptop,CTS,-NSf-1TvgBcDst-KuQbT
-Dell laptop 14,electronics,laptop,CTS,-NSf-1VUZ-Vn31UXiXQd
-Dell laptop 15,electronics,laptop,CTS,-NSf-1X4nrE4OjEB6xu4
-Dell laptop 16,electronics,laptop,CTS,-NSf-1YeM-biYpbum5on
-Dell laptop 17,electronics,laptop,CTS,-NSf-1_D6tU7GhuJeu4h
-Dell laptop 18,electronics,laptop,CTS,-NSf-1anUlQODdumHWBF
-Dell laptop 19,electronics,laptop,CTS,-NSf-1cM6Xh08kA7RcdY
-Dell laptop 20,electronics,laptop,CTS,-NSf-1dwCr8M59qFZGpH
-Dell laptop 21,electronics,laptop,CTS,-NSf-1fSC7PwYzGMTv1X
-Dell laptop 22,electronics,laptop,CTS,-NSf-1h1AXbMCPIr5cQN
-Dell laptop 23,electronics,laptop,CTS,-NSf-1iaie2nI-0sFpQI
-Dell laptop 24,electronics,laptop,CTS,-NSf-1k8Jbob7VFummzX
-Dell laptop 25,electronics,laptop,CTS,-NSf-1lfgdi4zrsQVAdj
-Dell laptop 26,electronics,laptop,CTS,-NSf-1nEpsL6iq3SPHYN
-Dell laptop 27,electronics,laptop,CTS,-NSf-1olTSv6CFOnUGat
-Dell laptop 28,electronics,laptop,CTS,-NSf-1qKFCLXDJtflAK6
-Dell laptop 29,electronics,laptop,CTS,-NSf-1rsAXnvFAZeSz8b
+﻿Device name,device type,device sub-type,location,purpose,device_id
+Dell laptop 1,electronics,laptop,CTS,onsite,3ea2c37b-e62b-4643-aa06-bf96277e559a
+Dell laptop 2,electronics,laptop,CTS,onsite,cb6569ee-01d4-4f44-a9be-483c7a9aa332
+Dell laptop 3,electronics,laptop,CTS,onsite,6d8a6516-fdc0-4fc9-954a-2c0c48540401
+Dell laptop 4,electronics,laptop,CTS,onsite,73617d4c-fcc7-4a92-a604-11c2898b1cd0
+Dell laptop 5,electronics,laptop,CTS,onsite,99b2fd80-8bdf-4829-a586-61b22644032f
+Dell laptop 6,electronics,laptop,CTS,lending library,f8e1f0a5-121b-4264-939a-92ebfcceccfd
+Dell laptop 7,electronics,laptop,CTS,onsite,25fdb017-3392-4ec9-bb85-8193c8d4dbc1
+Dell laptop 8,electronics,laptop,CTS,onsite,4d873241-41e8-49e7-b3be-c1785c0d8793
+Dell laptop 9,electronics,laptop,CTS,onsite,33a27efd-ae99-43bd-bee3-b755f7ab109a
+Dell laptop 10,electronics,laptop,CTS,onsite,cb4c4697-87fc-42c5-b687-0760ef77c18e
+Dell laptop 11,electronics,laptop,CTS,onsite,55eadfe9-b594-47e3-b704-fc4d242de3e5
+Dell laptop 12,electronics,laptop,CTS,onsite,4857b2e5-c45a-45c8-b456-c28dbe8acdb7
+Dell laptop 13,electronics,laptop,CTS,remote virtual,3fa290fe-5f80-4e99-b53e-18fe907405e7
+Dell laptop 14,electronics,laptop,CTS,onsite,d8c7d469-31ca-45a4-aa0d-4ddef5835f90
+Dell laptop 15,electronics,laptop,CTS,onsite,c4b2c8ae-2853-4dc9-a268-5afb67dfa4e3
+Dell laptop 16,electronics,laptop,CTS,onsite,56c6d960-7bca-4c38-8427-69d5919c5916
+Dell laptop 17,electronics,laptop,CTS,onsite,ef887171-8b42-47f5-abb0-fe044b250939
+Dell laptop 18,electronics,laptop,CTS,lending library,784bb170-9a21-448a-888c-af70e2625de0
+Dell laptop 19,electronics,laptop,CTS,onsite,c023d756-ee81-402d-b09c-beb6c62d4c12
+Dell laptop 20,electronics,laptop,CTS,onsite,dda01a42-c3e8-4f82-a192-ed96a5bc3d5e
+Dell laptop 21,electronics,laptop,CTS,onsite,6a4ad1a4-9f09-439e-991f-b7a6a2912fff
+Dell laptop 22,electronics,laptop,CTS,onsite,990e9e77-ec3f-4aba-ad2a-958c1f924fcb
+Dell laptop 23,electronics,laptop,CTS,remote virtual,34f5aa5a-e451-4ed4-ab04-d3ae1928c844
+Dell laptop 24,electronics,laptop,CTS,onsite,16064794-b199-4faa-b10a-dbb82090b257
+Dell laptop 25,electronics,laptop,CTS,onsite,b7b3c802-6d02-452d-90ee-40310fad47ca
+Dell laptop 26,electronics,laptop,CTS,onsite,33a89729-cabf-4609-9191-52059e8532dc
+Dell laptop 27,electronics,laptop,CTS,onsite,d48102a3-308f-4452-a6a6-a0e047dd59aa
+Dell laptop 28,electronics,laptop,CTS,onsite,82ef9675-4043-4a72-8377-0db4d7f700f1
+Dell laptop 29,electronics,laptop,CTS,onsite,1993fa84-aaaf-4a82-8df5-98e9a72d58df

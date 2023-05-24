@@ -8,17 +8,15 @@ from helper_lib.base64image import image_to_base64
 from helper_lib.pathmaker import resource_path
 from helper_lib.search import search_devices
 from thread_functions import save_device_list
-from os import path
-from pathlib import Path
 import uuid
-from menu import login_menu
+from gui.menu import login_menu
 from main import show_main_screen
 from threading import Thread
 from schedule import repeat, every, run_pending
 import json
-from device_modifier import modify_device
-from device_report import report_device
-from fault_details_window import fault_details
+from gui.device_modifier import modify_device
+from gui.device_report import report_device
+from gui.fault_details_window import fault_details
 from . import student_name_tag_window
 from . import device_tag_window
 from . import borrower_list_window
@@ -27,6 +25,30 @@ from constant.global_info import *
 table_data = []
 filter_table_data = []
 window_all_devices = None
+my_stream = None
+
+
+def create_json_file(csv_files):
+    students = {}
+    csv_files_path = csv_files.split(';')
+    for filepath in csv_files_path:
+        with open(filepath) as file:
+            csv_data = csv.reader(file)
+            line_count = 0
+            for row in csv_data:
+                if line_count:
+                    student = [
+                        row[1] + ' ' + row[2],
+                        row[3],
+                        row[4]
+                    ]
+                    students[row[5]] = student
+                else:
+                    line_count += 1
+
+    # print(students)
+    with open(path.join(user_data_location, 'booking.json'), 'w') as fp:
+        json.dump(students, fp)
 
 
 def update_device(device_id, device_updated_data):
@@ -45,6 +67,8 @@ def update_device(device_id, device_updated_data):
                     table_data[index][4] = val
                 if key == 'name':
                     table_data[index][5] = val
+                if key == 'purpose':
+                    table_data[index][6] = val
             change_main_table = True
             break
     if change_main_table:
@@ -63,6 +87,8 @@ def update_device(device_id, device_updated_data):
                     filter_table_data[index][4] = val
                 if key == 'name':
                     filter_table_data[index][5] = val
+                if key == 'purpose':
+                    table_data[index][6] = val
             change_filterred_table = True
             break
     if change_filterred_table:
@@ -86,6 +112,7 @@ def add_device_to_table_data(device_id, row_data):
     for item_key, item_val in row_data.items():
         row_data_to_add.append(item_val)
     table_data.append(row_data_to_add)
+    # filter_table_data.append(row_data_to_add)
     window_all_devices.write_event_value('-table-item-added-', 'full-table')
 
 
@@ -111,6 +138,7 @@ def delete_item_from_table(device_id):
 
 def stream_handler(message):
     # print(message['event'], message['data'], message['path'])
+    # print('helo from func')
     if message['event'] == 'put' and isinstance(message['data'], type(None)) and message['path'] != '/':
         document_id = message['path'][1:]
         delete_item_from_table(document_id)
@@ -127,8 +155,8 @@ def stream_handler(message):
         get_device_list_from_stream(message['data'])
 
 
-table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name']
-col_map = [False, True, True, True, True, True]
+table_heading = ['Device ID', 'Device sub type', 'Device type', 'Faulty?', 'Location', 'Device name', 'Purpose']
+col_map = [False, True, True, True, True, True, True]
 user = None
 
 
@@ -136,7 +164,7 @@ user = None
 def refresh_token(user_auth):
     global user
     user = auth.refresh(user_auth['refreshToken'])
-    with open(os.path.join('../security', "auth.json"), "w") as outfile:
+    with open(os.path.join(user_data_location, "auth.json"), "w") as outfile:
         json.dump(user, outfile)
 
 
@@ -147,28 +175,28 @@ def show_device_list_window(user_auth):
         idToken = user_auth['idToken']
     else:
         idToken = user['idToken']
+    global table_data, filter_table_data, my_stream
     my_stream = db.child("devices").stream(stream_handler, token=idToken)
-    global table_data, filter_table_data
-
     header_padding = ((5, 5), (20, 20))
     layout_all_devices = [
         [sg.Menu(login_menu(), key='-menu-', background_color='white')],
-        [sg.Push(), sg.ButtonMenu('  Download  ', menu_def=['Download', ['Download all::-download-all-',
+        [sg.Push(), sg.ButtonMenu('Download', menu_def=['Download', ['Download all::-download-all-',
                                                                          'Download selected::-download-selected-']],
                                   key='-download-device-list-', background_color='white', pad=header_padding,
-                                  font=font_normal),
+                                  font=font_normal, size=(len('Download')+5, 1)),
          sg.Input(default_text='', key='-filter-query-', do_not_clear=True, pad=header_padding, font=font_normal),
-         sg.Button(button_text='  Filter  ', key='-filter-submit-button-', pad=header_padding, font=font_normal),
-         sg.Button(button_text='  Modify  ', key='-modify-device-button-', visible=False, button_color='#2db52c',
-                   pad=header_padding, font=font_normal),
-         sg.Button(button_text='  Report as faulty  ', key='-faulty-report-device-button-', visible=False,
-                   button_color='#fcb116', pad=header_padding, font=font_normal),
-         sg.Button(button_text='  Delete  ', key='-delete-device-button-', visible=False, button_color='#de5260',
-                   pad=header_padding, font=font_normal),
-         sg.Button(button_text='   Fault details   ', pad=header_padding, key='-fault-details-', visible=False,
-                   button_color='#ff696a', font=font_normal),
-         sg.Button(button_text='  Mark as resolved  ', pad=header_padding, key='-mark-as-resolved-', visible=False,
-                   button_color='#2db52c',font=font_normal), sg.Push()],
+         sg.Button(button_text='Filter', key='-filter-submit-button-', pad=header_padding, font=font_normal,
+                   size=(len('Filter')+5, 1)),
+         sg.Button(button_text='Modify', key='-modify-device-button-', visible=False, button_color='#2db52c',
+                   pad=header_padding, font=font_normal, size=(len('Modify')+5, 1)),
+         sg.Button(button_text='Report as faulty', key='-faulty-report-device-button-', visible=False,
+                   button_color='#fcb116', pad=header_padding, font=font_normal, size=(len('Report as faulty')+5, 1)),
+         sg.Button(button_text='Delete', key='-delete-device-button-', visible=False, button_color='#de5260',
+                   pad=header_padding, font=font_normal, size=(len('Delete')+5, 1)),
+         sg.Button(button_text='Fault details', pad=header_padding, key='-fault-details-', visible=False,
+                   button_color='#ff696a', font=font_normal, size=(len('Fault details')+5, 1)),
+         sg.Button(button_text='Mark as resolved', pad=header_padding, key='-mark-as-resolved-', visible=False,
+                   button_color='#2db52c', font=font_normal, size=(len('Mark as resolved')+5, 1)), sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-all-devices-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
                   auto_size_columns=True, vertical_scroll_only=False, visible_column_map=col_map,
@@ -181,10 +209,10 @@ def show_device_list_window(user_auth):
     max_width = int(max_width * 0.8)
     max_height = int(max_height * 0.6)
     global window_all_devices
-    window_all_devices = sg.Window(title="CTS CMS",
+    window_all_devices = sg.Window(title="CTS CMS :: device list",
                                    layout=layout_all_devices,
                                    size=(max_width, max_height),
-                                   icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
+                                   icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))),
                                    finalize=True,
                                    resizable=True,
                                    font=font_normal)
@@ -202,7 +230,7 @@ def show_device_list_window(user_auth):
             sg.popup_quick_message('Devices added successfully.', font=font_normal)
             result = sg.popup_ok_cancel('Do you want to generate device QR Code?',
                                         title='Device QR Code', font=font_normal,
-                                        icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))))
+                                        icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))))
             if result == 'OK':
                 device_tag_window.device_tag(csv_files=csv_file_path)
         if event == '-Thread-csv-download-':
@@ -217,7 +245,7 @@ def show_device_list_window(user_auth):
             result = sg.popup_ok_cancel(
                 'Are you sure you want to delete this device? This action will remove it completely.',
                 title='Delete device', font=font_normal,
-                icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))))
+                icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))))
             if result == 'OK':
                 remove_device_from_database(selected_device[0], idToken)
         if event == '-download-device-list-':
@@ -235,13 +263,17 @@ def show_device_list_window(user_auth):
                                              args=(download_path, table_heading, filter_table_data, window_all_devices))
                 thread_download_csv.start()
         if '-all-devices-' in event:
-            selected_device = filter_table_data[values['-all-devices-'][0]]
+            if show_main_table:
+                selected_device = table_data[values['-all-devices-'][0]]
+            else:
+                selected_device = filter_table_data[values['-all-devices-'][0]]
             if selected_device:
-                window_all_devices['-modify-device-button-'].update(visible=not selected_device[3])
-                window_all_devices['-faulty-report-device-button-'].update(visible=not selected_device[3])
-                window_all_devices['-delete-device-button-'].update(visible=not selected_device[3])
-                window_all_devices['-fault-details-'].update(visible=selected_device[3])
-                window_all_devices['-mark-as-resolved-'].update(visible=selected_device[3])
+                print(selected_device)
+                window_all_devices['-modify-device-button-'].update(visible=selected_device[3] == 'false')
+                window_all_devices['-faulty-report-device-button-'].update(visible=selected_device[3] == 'false')
+                window_all_devices['-delete-device-button-'].update(visible=selected_device[3] == 'false')
+                window_all_devices['-fault-details-'].update(visible=not selected_device[3] == 'false')
+                window_all_devices['-mark-as-resolved-'].update(visible=not selected_device[3] == 'false')
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
         if event == '-faulty-report-device-button-':
@@ -249,9 +281,11 @@ def show_device_list_window(user_auth):
         if event == '-fault-details-':
             fault_details(selected_device[0], idToken)
         if event == '-mark-as-resolved-':
-            db.child('devices').child(selected_device[0]).update(data={'isFaulty': False}, token=idToken)
+            db.child('devices').child(selected_device[0]).update(data={'isFaulty': 'false'}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
             storage.delete(name=f"{selected_device[0]}.png", token=idToken)
+            if path.exists(path.join(user_data_location, 'download.png')):
+                os.remove(path.join(user_data_location, 'download.png'))
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             query = values['-filter-query-']
             if len(query):
@@ -264,8 +298,8 @@ def show_device_list_window(user_auth):
                 show_main_table = True
         if event == 'Logout':
             window_all_devices.close()
-            if path.exists(path.join('../firebase', 'auth.json')):
-                os.remove(path.join('../firebase', 'auth.json'))
+            if path.exists(path.join(user_data_location, 'auth.json')):
+                os.remove(path.join(user_data_location, 'auth.json'))
             show_main_screen()
         if event == 'Student name tag':
             student_name_tag_window.student_name_tag()
@@ -274,7 +308,7 @@ def show_device_list_window(user_auth):
         if event == 'Devices':
             csv_file_path = sg.popup_get_file(message='Upload device csv file(s)', title='Device file uploader',
                                               font=font_normal, keep_on_top=True, file_types=(('CSV Files', '*.csv'),),
-                                              icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
+                                              icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))),
                                               multiple_files=True)
             if csv_file_path:
                 thread_device_upload = Thread(target=add_device_to_database,
@@ -302,7 +336,7 @@ def show_device_list_window(user_auth):
             with open(path.join(Path.home(), 'Downloads', 'device_list_csv_template.csv'), mode='w',
                       newline='') as csvfile:
                 writer = csv.writer(csvfile)
-                writer.writerow(['Device name', 'device type', 'device sub-type', 'location'])
+                writer.writerow(['Device name', 'device type', 'device sub-type', 'location', 'purpose'])
             sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1,
                                    font=font_normal)
         if event == 'Download student booking CSV file template':
@@ -313,7 +347,22 @@ def show_device_list_window(user_auth):
             sg.popup_quick_message('Checkout the download folder for the template file', auto_close_duration=1,
                                    font=font_normal)
         if event == 'Borrowed device list':
-            borrower_list_window.borrowed_devices_window(idToken)
+            show_borrow_window = False
+            if not path.exists(path.join(user_data_location, 'booking.json')):
+                borrow_file_path = sg.popup_get_file(message='Choose student booking csv file(s)',
+                                                     title='Borrower details', font=font_normal, keep_on_top=True,
+                                                     file_types=(('CSV Files', '*.csv'),),
+                                                     icon=image_to_base64(
+                                                         resource_path(path.join('assets', 'logo.png'))),
+                                                     multiple_files=True)
+                if borrow_file_path:
+                    create_json_file(borrow_file_path)
+                    borrower_list_window.borrowed_devices_window(idToken)
+            else:
+                show_borrow_window = True
+
+            if show_borrow_window:
+                borrower_list_window.borrowed_devices_window(idToken)
 
     if thread_device_upload is not None:
         thread_device_upload.join()
@@ -321,13 +370,11 @@ def show_device_list_window(user_auth):
         thread_download_csv.join()
     if thread_student_qrcode is not None:
         thread_student_qrcode.join()
-    if path.exists('download.png'):
-        os.remove('download.png')
-    my_stream.close()
-    if path.exists(path.join('../security', 'auth.json')):
-        os.remove(path.join('../security', 'auth.json'))
+    if path.exists(path.join(user_data_location, 'download.png')):
+        os.remove(path.join(user_data_location, 'download.png'))
+    if my_stream:
+        my_stream.close()
+    if path.exists(path.join(user_data_location, 'auth.json')):
+        os.remove(path.join(user_data_location, 'auth.json'))
     window_all_devices.close()
 
-
-if __name__ == '__main__':
-    show_device_list_window()

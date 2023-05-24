@@ -1,6 +1,10 @@
 firebase/config.py
-security/key.key
-security/uname
-security/pword
+data/key.key
+data/uname
+data/pword
 security/auth.json
 demo
+dist
+build
+*.spec
+output

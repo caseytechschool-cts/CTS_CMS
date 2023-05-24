@@ -1,26 +1,29 @@
 import PySimpleGUI as sg
 from helper_lib.base64image import image_to_base64
 import json
-import csv
-from os import path, remove
+from os import remove
 from helper_lib.search import search_devices
 from helper_lib.pathmaker import resource_path
 import ast
 from constant.global_info import *
-
+from firebase.config import *
 
 table_heading = ['Device ID', 'Borrower name', 'Borrower role', 'Device name']
 table_data = []
 filter_table_data = []
 window_borrower_list = None
 json_data = None
+my_stream = None
 
 
 def get_device_list_from_stream(device_list):
-    global table_data
+    global table_data, filter_table_data
+    # print(device_list.items())
     for key, val in device_list.items():
-        borrow_data = ast.literal_eval(val.items())
+        # borrow_data = ast.literal_eval(val)
+        borrow_data = [val]
         borrow_data.insert(0, key)
+        # print(borrow_data)
         t = student_id_to_data(borrow_data[1])
         borrow_data.insert(2, t[2].capitalize())
         if t[1] != "":
@@ -29,11 +32,13 @@ def get_device_list_from_stream(device_list):
             borrow_data[1] = t[0]
         table_data.append(borrow_data)
 
+    filter_table_data = table_data
     window_borrower_list.write_event_value('-table-item-added-', 'full-table')
 
 
 def add_device_to_table_data(device_id, row_data):
-    borrow_data = ast.literal_eval(row_data.items())
+    # borrow_data = ast.literal_eval(row_data)
+    borrow_data = [row_data]
     borrow_data.insert(0, device_id)
     t = student_id_to_data(borrow_data[1])
     borrow_data.insert(2, t[2].capitalize())
@@ -42,6 +47,7 @@ def add_device_to_table_data(device_id, row_data):
     else:
         borrow_data[1] = t[0]
     table_data.append(borrow_data)
+    # filter_table_data.append(borrow_data)
     window_borrower_list.write_event_value('-table-item-added-', 'full-table')
 
 
@@ -66,7 +72,7 @@ def delete_item_from_table(device_id):
 
 
 def stream_handler(message):
-    # print(message['event'], message['data'], message['path'])
+    # print(message['event'], type(message['data']), message['path'])
     if message['event'] == 'put' and isinstance(message['data'], type(None)) and message['path'] != '/':
         document_id = message['path'][1:]
         delete_item_from_table(document_id)
@@ -74,61 +80,41 @@ def stream_handler(message):
         global table_data
         table_data = []
         window_borrower_list.write_event_value('-table-delete-', 'all')
-    elif message['event'] == 'put' and isinstance(message['data'], dict) and message['path'] != '/':
+    elif message['event'] == 'put' and isinstance(message['data'], str) and message['path'] != '/':
         add_device_to_table_data(message['path'][1:], message['data'])
     elif message['event'] == 'put' and isinstance(message['data'], dict):
         get_device_list_from_stream(message['data'])
 
 
-def student_id_to_data(student_id='1b5cce5b-65bb-4fc0-8533-3a44d6bb1bc5'):
+def student_id_to_data(student_id):
     if json_data:
         try:
             return json_data[student_id]
         except KeyError:
-            if path.exists(path.join('../csv_files', 'booking.json')):
-                remove(path.join('../csv_files', 'booking.json'))
+            if path.exists(path.join(user_data_location, 'booking.json')):
+                remove(path.join(user_data_location, 'booking.json'))
     return None
 
 
-def create_json_file(csv_files):
-    students = {}
-    csv_files_path = csv_files.split(';')
-    for filepath in csv_files_path:
-        with open(filepath) as file:
-            csv_data = csv.reader(file)
-            line_count = 0
-            for row in csv_data:
-                if line_count:
-                    student = [
-                        row[1] + ' ' + row[2],
-                        row[3],
-                        row[4]
-                    ]
-                    students[row[5]] = student
-                else:
-                    line_count += 1
-
-    with open(path.join('../csv_files', 'booking.json'), 'w') as fp:
-        json.dump(students, fp)
-
-
-def borrowed_devices_window(idToken=None):
+def borrowed_devices_window(idToken):
     sg.theme('Material1')
     show_main_table = True
     header_padding = ((5, 5), (20, 20))
-    global table_data, json_data, filter_table_data
+    global table_data, json_data, filter_table_data, my_stream
+    table_data = []
+    filter_table_data = []
+    my_stream = None
     # my_stream = db.child("borrowed_devices").stream(stream_handler, token=idToken)
-    if path.exists(path.join('../csv_files', 'booking.json')):
-        with open(path.join('../csv_files', 'booking.json')) as f:
+    if path.exists(path.join(user_data_location, 'booking.json')):
+        with open(path.join(user_data_location, 'booking.json')) as f:
             json_data = json.load(f)
+            my_stream = db.child("borrowed_devices").stream(stream_handler, token=idToken)
     # student_id_to_data()
     layout = [
-        [sg.Push(), sg.Text(text='Choose the current student booking csv file(s) for student details',
-                            font=font_normal, key='-msg-', visible=True), sg.Push()],
-        [sg.Push(), sg.Input(default_text='', key='-booking-files-', visible=True, font=font_normal),
-         sg.FilesBrowse(key='-files-', file_types=(('CSV Files', '*.csv'),), visible=True), sg.Push()],
-        [sg.Push(), sg.Input(default_text='', key='-filter-people-', do_not_clear=True, pad=header_padding, font=font_normal),
-         sg.Button(button_text='  Filter  ', key='-filter-people-button-', pad=header_padding, font=font_normal),
+        [sg.Push(),
+         sg.Input(default_text='', key='-filter-people-', do_not_clear=True, pad=header_padding, font=font_normal),
+         sg.Button(button_text='Filter', key='-filter-people-button-', pad=header_padding, font=font_normal,
+                   size=(len('Filter')+5, 1)),
          sg.Push()],
         [sg.Table(values=table_data, headings=table_heading, key='-borrower-list-', justification='center',
                   alternating_row_color='#b5c1ca', expand_x=True, expand_y=True, row_height=20, enable_events=True,
@@ -141,10 +127,10 @@ def borrowed_devices_window(idToken=None):
     max_width = int(max_width * 0.8)
     max_height = int(max_height * 0.6)
     global window_borrower_list
-    window_borrower_list = sg.Window(title="CTS CMS",
+    window_borrower_list = sg.Window(title="CTS CMS :: Borrower list",
                                      layout=layout,
                                      size=(max_width, max_height),
-                                     icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))),
+                                     icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))),
                                      finalize=True,
                                      resizable=True,
                                      font=font_normal)
@@ -155,18 +141,7 @@ def borrowed_devices_window(idToken=None):
         event, values = window_borrower_list.read(timeout=100)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
-        if path.exists(path.join('../csv_files', 'booking.json')):
-            window_borrower_list['-borrower-list-'].update(visible=True)
-            window_borrower_list['-msg-'].update(visible=False)
-            window_borrower_list['-booking-files-'].update(visible=False)
-            window_borrower_list['-files-'].update(visible=False)
-        else:
-            window_borrower_list['-borrower-list-'].update(visible=False)
-            # my_stream.close()
-        if values['-booking-files-']:
-            student_csv_files = values['-booking-files-']
-            window_borrower_list['-booking-files-'].update(value=None)
-            create_json_file(student_csv_files)
+
         if event == '-filter-people-button-' or event == '-filter-people-' + '_Enter':
             query = values['-filter-people-']
             if len(query):
@@ -187,10 +162,7 @@ def borrowed_devices_window(idToken=None):
             window_borrower_list['-borrower-list-'].update(values=table_data)
         if event == '-table-item-added-':
             window_borrower_list['-borrower-list-'].update(values=table_data)
-
-    # my_stream.close()
+    if json_data and my_stream:
+        my_stream.close()
     window_borrower_list.close()
 
-
-if __name__ == '__main__':
-    borrowed_devices_window()

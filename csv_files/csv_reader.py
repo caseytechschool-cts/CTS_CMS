@@ -20,7 +20,8 @@ def csv_student_reader(filepath, destination_folder):
             if line_count:
                 student = {
                     "id": str(uuid.uuid4()),
-                    "role": row[4].lower()
+                    "role": row[4].lower(),
+                    "magic": '39'
                 }
                 qr_file_name = f"qrcode_{count}"
                 create_qrcode(student, qr_file_name, qr_code_path)
@@ -56,9 +57,11 @@ def csv_device_reader(filepath, destination_folder):
                     "name": row[0],
                     "device_type": row[1],
                     "device_sub_type": row[2],
-                    "isFaulty": False,
+                    "isFaulty": 'false',
                     "location": row[3],
-                    "id": row[4]
+                    "id": row[5],
+                    "magic": '39',
+                    "purpose": row[4]
                 }
                 qr_file_name = f"qrcode_{count}"
                 create_qrcode(device, qr_file_name, qr_code_path)

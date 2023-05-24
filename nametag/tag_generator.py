@@ -4,6 +4,7 @@ import shutil
 from nametag.nametags import nametag_image, devicetag_image
 from nametag.doc_template import create_doc_with_device_tags, create_doc_with_name_tags
 from csv_files import csv_reader
+import subprocess
 
 
 def generate_name_tags(files, destination_folder, show_qr_code, show_box, window):
@@ -23,6 +24,7 @@ def generate_name_tags(files, destination_folder, show_qr_code, show_box, window
         create_doc_with_name_tags(save_in_folder)
 
     window.write_event_value('-thread-name-tags-', 'generated')
+    subprocess.Popen(r'explorer /select,"{}"'.format(save_in_folder))
 
 
 def generate_device_tags(files, destination_folder, show_name, window):
@@ -41,6 +43,7 @@ def generate_device_tags(files, destination_folder, show_name, window):
         create_doc_with_device_tags(save_in_folder)
 
     window.write_event_value('-thread-device-tags-', 'generated')
+    subprocess.Popen(r'explorer /select,"{}"'.format(save_in_folder))
 
 
 

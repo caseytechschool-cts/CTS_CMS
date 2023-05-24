@@ -1,7 +1,8 @@
 from docx import Document
+from os import path
 
 
-doc = Document('LABL5420_A0240_docx.docx')
+doc = Document(path.join('data', 'LABL5420_A0240_docx.docx'))
 table = doc.tables[0]
 count = 1
 for row in table.rows:
@@ -12,4 +13,4 @@ for row in table.rows:
         cell.text = new_text
         count += 1
 
-doc.save('template_device_tags.docx')
+doc.save(path.join('data', 'template_device_tags.docx'))

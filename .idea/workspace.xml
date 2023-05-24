@@ -5,8 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02ec80b-0de1-42cd-aef8-70d7a3e824cf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CTS_CMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CTS_CMS.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSV/booking_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSV/booking_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSV/devices.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSV/devices.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant/global_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/constant/global_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/csv_files/booking.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/csv_files/csv_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/csv_files/csv_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/CURD.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/CURD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/user_log_in.py" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/user_log_in.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/borrower_list_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/borrower_list_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/device_modifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_modifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/device_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/device_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_tag_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/fault_details_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/fault_details_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/login_screen_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/login_screen_layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/show_device_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/show_device_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/student_name_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_name_tag_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/template_device_tags.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/template_with_tags.docx" beforeDir="false" afterPath="$PROJECT_DIR$/data/template_with_tags.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper_lib/base64image.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper_lib/base64image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper_lib/pathmaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper_lib/pathmaker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/LABL5420_A0240_docx.docx" beforeDir="false" afterPath="$PROJECT_DIR$/data/LABL5420_A0240_docx.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/device_template_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/device_template_creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/doc_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/doc_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/filled_label_template.docx" beforeDir="false" afterPath="$PROJECT_DIR$/data/filled_label_template.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/tag_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/tag_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/template.docx" beforeDir="false" afterPath="$PROJECT_DIR$/data/template.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/template_device_tags.docx" beforeDir="false" afterPath="$PROJECT_DIR$/data/template_device_tags.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nametag/word_template_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/nametag/word_template_creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qr_code/qrcode_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/qr_code/qrcode_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security/generate_key.py" beforeDir="false" afterPath="$PROJECT_DIR$/security/generate_key.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,14 +83,14 @@
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\data" />
+      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\firebase" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\assets" />
       <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\gui" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\nametag" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\security" />
-      <recent name="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\source" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (1)">
     <configuration name="borrower_list_window" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CTS_CMS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,48 +104,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/borrower_list_window.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="device_tag_window" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="CTS_CMS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/device_tag_window.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="device_template_creator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="CTS_CMS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nametag" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nametag/device_template_creator.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -143,6 +133,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CTS_CMS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CTS_CMS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -155,7 +166,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/main.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Abdullah\Desktop\Desktop\CTS_CMS\main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="show_device_list" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CTS_CMS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/gui" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui/show_device_list.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -166,11 +198,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.login_screen_layout" />
+        <item itemvalue="Python.show_device_list" />
         <item itemvalue="Python.borrower_list_window" />
-        <item itemvalue="Python.device_tag_window" />
-        <item itemvalue="Python.device_template_creator" />
+        <item itemvalue="Python.login_screen_layout" />
       </list>
     </recent_temporary>
   </component>

@@ -2,7 +2,6 @@ import PySimpleGUI as sg
 from firebase.config import *
 from helper_lib.base64image import image_to_base64
 from helper_lib.pathmaker import resource_path
-from os import path
 from constant.global_info import *
 
 
@@ -16,10 +15,12 @@ def modify_device(selected_device, idToken):
                                                                       font=font_normal)],
               [sg.Text('Device location', font=font_normal), sg.Input(key='-LOCATION-', default_text=selected_device[4],
                                                                       font=font_normal)],
-              [sg.Button(button_color='#2db52c', button_text='Submit', font=font_normal), sg.Cancel(font=font_normal)]]
+              [sg.Button(button_color='#2db52c', button_text='Submit', font=font_normal,
+                         size=(len('Submit')+5, 1)), sg.Cancel(font=font_normal, size=(len('Cancel')+5, 1))]]
 
-    window = sg.Window('Modify device', layout, element_justification='r', keep_on_top=True, font=font_normal,
-                       icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))), finalize=True)
+    window = sg.Window(title='CTS CMS :: Modify device', layout=layout, element_justification='r',
+                       keep_on_top=True, font=font_normal,
+                       icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))), finalize=True)
 
     while True:
         event, values = window.read(timeout=100)

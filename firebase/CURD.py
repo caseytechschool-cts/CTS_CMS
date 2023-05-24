@@ -1,7 +1,5 @@
-from os import path
-import requests
 import csv
-import json
+import uuid
 from firebase.config import *
 
 
@@ -19,12 +17,17 @@ def add_device_to_database(window, csv_files, idToken):
                         "name": row[0],
                         "device_type": row[1],
                         "device_sub_type": row[2],
-                        "isFaulty": False,
-                        "location": row[3]
+                        "isFaulty": 'false',
+                        "location": row[3],
+                        "purpose": row[4]
                     }
-                    device_id = db.child('devices').push(device_data, token=idToken)
+                    device_id = str(uuid.uuid4())
+                    db.child('devices').child(device_id).set(device_data, token=idToken)
+                    # print(type(device_id['name']))
                     if add_device_id:
-                        row.append(str(device_id['name']))
+                        row.append(device_id)
+                    else:
+                        row[5] = device_id
                 else:
                     line_count = 1
                     if 'device_id' in row:

@@ -5,8 +5,8 @@ from constant.global_info import *
 
 
 def file_exist(filename, f=None):
-    if os.path.exists(os.path.join('../security', filename)):
-        with open(os.path.join('../security', filename)) as file:
+    if os.path.exists(os.path.join(user_data_location, filename)):
+        with open(os.path.join(user_data_location, filename)) as file:
             user_name = f.decrypt(file.read())
             return user_name.decode()
     return ""
@@ -16,15 +16,14 @@ def login_screen_layout(f):
     user_name_value = file_exist('uname', f=f)
     password_value = file_exist('pword', f=f)
 
-    if os.path.exists(os.path.join('../firebase', 'auth.json')):
-        json_email = json.load(open(os.path.join('../firebase', 'auth.json')))
+    if os.path.exists(os.path.join(user_data_location, 'auth.json')):
+        json_email = json.load(open(os.path.join(user_data_location, 'auth.json')))
         user_name_value = json_email['email']
 
     login_screen_components = [
         [sg.Push(background_color='white'),
          sg.Text(text='Login to CTS CMS', background_color='white', font=font_heading,
-                 pad=((10, 10), (20, 10))),
-         sg.Push(background_color='white')],
+                 pad=((10, 10), (20, 10))), sg.Push(background_color='white')],
         [sg.Text(text='', background_color='white', font=font_normal,
                  pad=((10, 10), (10, 0)), key='-login-error-', text_color='red', visible=False)],
         [sg.Text(text='Email:', background_color='white', font=font_normal, pad=((10, 10), (10, 0)))],
@@ -54,8 +53,7 @@ def login_screen_layout(f):
 def signup_screen_layout():
     signup_screen_components = [
         [sg.Push(background_color='white'),
-         sg.Text(text='Sign up to CTS CMS', background_color='white', font=font_heading,
-                 pad=((10, 10), (20, 10))),
+         sg.Text(text='Sign up to CTS CMS', background_color='white', font=font_heading, pad=((10, 10), (20, 10))),
          sg.Push(background_color='white')],
         [sg.Text(text='Email:', background_color='white', font=font_normal, pad=((10, 10), (10, 0)))],
         [sg.Input(key='-username-signup-', background_color='#f5f7fb', font=font_normal, pad=((10, 10), (10, 0)))],
@@ -82,8 +80,7 @@ def reset_password_function():
         [sg.Input(key='-reset-password-username-', background_color='#f5f7fb', font=font_normal,
                   pad=((10, 10), (10, 0)), do_not_clear=False)],
         [sg.Button(button_text='Reset password', key='-reset-password-', expand_x=True,
-                   font=account_button_font,
-                   pad=((10, 10), (20, 20)))],
+                   font=account_button_font, pad=((10, 10), (20, 20)))],
         [sg.Text(text='Check your email for the reset link', background_color='white', visible=False,
                  pad=((10, 10), (10, 10)), key='-reset-msg-', font=font_normal)],
         [sg.Text(text='Jump to the login page', background_color='white', visible=False, enable_events=True,

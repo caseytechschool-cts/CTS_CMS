@@ -4,7 +4,6 @@ from helper_lib.base64image import image_to_base64
 from helper_lib.pathmaker import resource_path
 from datetime import datetime
 import json
-from os import path
 from threading import Thread
 import win32com.client as win32
 from constant.global_info import *
@@ -13,10 +12,10 @@ from constant.global_info import *
 def thread_device_report(description, selected_device, idToken, fpath, window):
     msg = ''
     device_data = {
-        "isFaulty": True
+        "isFaulty": 'true'
     }
-    if path.exists(path.join('../firebase', 'auth.json')):
-        user = json.load(open(path.join('../firebase', 'auth.json'), ))
+    if path.exists(path.join(user_data_location, 'auth.json')):
+        user = json.load(open(path.join(user_data_location, 'auth.json'), ))
         if user:
             email = user['email']
             added_at = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -64,22 +63,30 @@ def report_device(selected_device, idToken):
     sg.theme('Material1')
     layout = [[sg.Text('Brief description of the problem', font=font_normal)],
               [sg.Multiline(key='-description-', expand_x=True, size=(100, 5), autoscroll=True, font=font_normal)],
-              [sg.Push(), sg.Text('Add images', font=font_normal), sg.Input(key='-path-', font=font_normal),
-               sg.FileBrowse(), sg.Push()],
-              [sg.Push(), sg.Button(button_color='#fcb116', button_text='Submit', font=font_normal),
-               sg.Cancel(font=font_normal), sg.Push()],
-              [sg.Text('Please upload a png or jpeg image file', key='-warning-', visible=False, font=font_normal)]
+              [sg.Push(), sg.Text('Add image', font=font_normal), sg.Input(key='-path-', font=font_normal),
+               sg.FileBrowse(size=(len('Browse')+5, 1)), sg.Push()],
+              [sg.Push(),
+               sg.Button(button_color='#fcb116', button_text='Submit', font=font_normal, size=(len('Submit') + 5, 1)),
+               sg.Cancel(font=font_normal, size=(len('Cancel') + 5, 1)), sg.Push()],
+              [sg.HSeparator(color='#808080', pad=((0, 0), (20, 10)))],
+              [sg.Text('Please upload a png or jpeg image file', key='-warning-', visible=False, font=font_normal,
+                       text_color='#808080')],
+              [sg.Text(text='Reporting ', key='-status-', text_color='#808080', visible=False, font=font_normal)]
               ]
 
-    window = sg.Window('Report as faulty', layout, element_justification='l', keep_on_top=True, font=font_normal,
-                       icon=image_to_base64(resource_path(path.join('../assets', 'logo.png'))), finalize=True)
+    window = sg.Window(title='CTS CMS :: Report as faulty', layout=layout, element_justification='l',
+                       keep_on_top=True, font=font_normal,
+                       icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))), finalize=True)
 
     thread_device = None
+    thread_device_running = False
     thread_send_email = None
     while True:
         event, values = window.read(timeout=100)
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
+        if thread_device_running:
+            window['-status-'].update(value=window['-status-'].get() + '.', visible=True)
         if event == 'Submit':
             if values['-path-'] == '':
                 window['-warning-'].update(visible=True)
@@ -87,13 +94,15 @@ def report_device(selected_device, idToken):
                 _, ext = path.splitext(values['-path-'])
                 if ext.lower() in ('.png', '.jpg', '.jpeg'):
                     window['-warning-'].update(visible=False)
+                    thread_device_running = True
                     thread_device = Thread(target=thread_device_report,
                                            args=(values['-description-'], selected_device[0], idToken, values['-path-'],
                                                  window)).start()
                 else:
                     window['-warning-'].update(visible=True)
         if event == '-thread-device-report-' and values[event] == 'done':
-            sg.popup_quick_message('Faulty device reported successfully!', auto_close_duration=1)
+            window['-status-'].update(value='Reported successfully', visible=True)
+            thread_device_running = False
             button = sg.popup_ok_cancel('Do you want to send an email to report the fault?', keep_on_top=True,
                                         font=font_normal)
             if button == 'Cancel':

@@ -1,10 +1,10 @@
+import PyPDF2
 import json
 import PySimpleGUI as sg
-import login_screen_layout
+from gui import login_screen_layout
 from helper_lib.base64image import image_to_base64
 from helper_lib.pathmaker import resource_path
 from security import generate_key
-from pathlib import Path
 from cryptography.fernet import Fernet
 import os
 from firebase import user_log_in
@@ -15,7 +15,7 @@ from constant.global_info import *
 
 def show_main_screen():
     sg.theme('Material1')
-    key_path = Path(os.path.join('../security', 'key.key'))
+    key_path = Path(os.path.join(user_data_location, 'key.key'))
     if key_path.is_file():
         with open(key_path, 'rb') as key_file:
             key = key_file.read()
@@ -23,11 +23,11 @@ def show_main_screen():
         key = generate_key.key_generation()
     f = Fernet(key)
 
-    window_login_in = sg.Window(title="Login screen",
+    window_login_in = sg.Window(title="CTS CMS :: login screen",
                                 layout=login_screen_layout.layout_mixer_auth(f),
                                 size=(800, 600),
                                 margins=(20, 20),
-                                icon=image_to_base64(resource_path(os.path.join('../assets', 'logo.png'))),
+                                icon=image_to_base64(resource_path(os.path.join('assets', 'logo.png'))),
                                 alpha_channel=1.0,
                                 finalize=True,
                                 font=font_normal)
@@ -46,19 +46,19 @@ def show_main_screen():
             window_login_in['-password-'].update(password_char='*')
         if event == '-sign-in-' or event == '-password-' + '_Enter':
             if values['-remember-me-']:
-                with open(os.path.join('../security', 'uname'), 'wb') as username:
+                with open(os.path.join(user_data_location, 'uname'), 'wb') as username:
                     user_name = f.encrypt(bytes(values['-username-'], encoding='utf8'))
                     username.write(user_name)
-                with open(os.path.join('../security', 'pword'), 'wb') as userpass:
+                with open(os.path.join(user_data_location, 'pword'), 'wb') as userpass:
                     password = f.encrypt(bytes(values['-password-'], encoding='utf8'))
                     userpass.write(password)
             if values['-forget-me-']:
-                if os.path.exists(os.path.join('../security', 'uname')):
-                    os.remove(os.path.join('../security', 'uname'))
-                if os.path.exists(os.path.join('../security', 'pword')):
-                    os.remove(os.path.join('../security', 'pword'))
-            if os.path.exists(os.path.join('../firebase', 'auth.json')):
-                user = json.load(open(os.path.join('../firebase', 'auth.json'),))
+                if os.path.exists(os.path.join(user_data_location, 'uname')):
+                    os.remove(os.path.join(user_data_location, 'uname'))
+                if os.path.exists(os.path.join(user_data_location, 'pword')):
+                    os.remove(os.path.join(user_data_location, 'pword'))
+            if os.path.exists(os.path.join(user_data_location, 'auth.json')):
+                user = json.load(open(os.path.join(user_data_location, 'auth.json'), ))
             else:
                 user, msg = user_log_in.log_in(values['-username-'], values['-password-'])
             if user is None:
@@ -70,19 +70,19 @@ def show_main_screen():
         if event == '-sign-up-':
             window_login_in['-login-screen-'].update(visible=False)
             window_login_in['-signup-screen-'].update(visible=True)
-            window_login_in.set_title('Sign up page')
+            window_login_in.set_title('CTS CMS :: sign up page')
         if event == '-sign-up-now-':
             create_user(values['-username-signup-'], values['-password-signup-'])
             # print('done')
             window_login_in['-login-screen-'].update(visible=True)
             window_login_in['-signup-screen-'].update(visible=False)
 
-            window_login_in.set_title('Login page')
+            window_login_in.set_title('CTS CMS :: login page')
         if event == '-forgot-':
             window_login_in['-login-screen-'].update(visible=False)
             window_login_in['-signup-screen-'].update(visible=False)
             window_login_in['-reset-screen-'].update(visible=True)
-            window_login_in.set_title('Reset password page')
+            window_login_in.set_title('CTS CMS :: reset password page')
         if event == '-reset-password-' or event == '-reset-password-username-' + '_Enter':
             reset_status = password_reset(values['-reset-password-username-'])
             if reset_status:
@@ -95,10 +95,10 @@ def show_main_screen():
             window_login_in['-login-screen-'].update(visible=True)
             window_login_in['-signup-screen-'].update(visible=False)
             window_login_in['-reset-screen-'].update(visible=False)
-            window_login_in.set_title('Login page')
+            window_login_in.set_title('CTS CMS :: login page')
 
-    if os.path.exists(os.path.join('../firebase', 'auth.json')):
-        os.remove(os.path.join('../firebase', 'auth.json'))
+    if os.path.exists(os.path.join(user_data_location, 'auth.json')):
+        os.remove(os.path.join(user_data_location, 'auth.json'))
     window_login_in.close()
 
 
