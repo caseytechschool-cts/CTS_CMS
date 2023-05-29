@@ -38,7 +38,7 @@ def device_tag(csv_files=''):
          sg.Column(col2_layout, pad=((20, 20), (20, 20)), justification='c', element_justification='c')]
     ]
 
-    window = sg.Window(title='CTS CMS :: device QR Code generator', layout=layout, element_justification='l',
+    window = sg.Window(title='CTS CMS :: Device QR Code generator', layout=layout, element_justification='l',
                        keep_on_top=True, icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))),
                        finalize=True, font=font_normal)
 

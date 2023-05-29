@@ -11,6 +11,7 @@ from firebase import user_log_in
 from firebase.manage_user import password_reset, create_user
 from gui import show_device_list
 from constant.global_info import *
+import webbrowser
 
 
 def show_main_screen():
@@ -39,7 +40,8 @@ def show_main_screen():
         # print(event)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
-
+        if event == '-docs-':
+            webbrowser.open_new_tab('https://casey-tech-school.gitbook.io/cts_cms/')
         if values['-show-password-']:
             window_login_in['-password-'].update(password_char='')
         else:

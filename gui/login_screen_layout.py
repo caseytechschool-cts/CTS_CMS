@@ -62,6 +62,8 @@ def signup_screen_layout():
                   pad=((10, 10), (10, 0)))],
         [sg.Button(button_text='SIGN UP NOW', key='-sign-up-now-', expand_x=True, font=account_button_font,
                    pad=((10, 10), (20, 20)))],
+        [sg.Text(text='Check out the documentation', font=font_underline, background_color='white',
+                 pad=((10, 10), (10, 5)), key='-docs-', enable_events=True)],
         [sg.Text(text='Already have an account? Login here', font=font_underline, background_color='white',
                  pad=((10, 10), (10, 20)), key='-sign-up-to-log-in-', enable_events=True)]
     ]

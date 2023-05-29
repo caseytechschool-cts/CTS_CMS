@@ -20,7 +20,7 @@ def login_menu():
                    'Download student booking CSV file template', '---', 'E&xit']],
         ['&Create', ['Student name tag', 'Device QR Code tag']],
         ['Add', ['Devices']],
-        ['&Help', ['&About...']],
+        ['&Help', ['Documentation']],
         ['My account', ['Logout']]
     ]
     return menu_login

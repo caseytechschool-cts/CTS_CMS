@@ -39,7 +39,7 @@ def student_name_tag():
          sg.Column(col2_layout, pad=((20, 20), (20, 20)), justification='c', element_justification='c')]
     ]
 
-    window = sg.Window(title='CTS CMS :: name tag generator', layout=layout, element_justification='l',
+    window = sg.Window(title='CTS CMS :: Name tag generator', layout=layout, element_justification='l',
                        keep_on_top=True, font=font_normal,
                        icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))), finalize=True)
 

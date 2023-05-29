@@ -21,6 +21,7 @@ from . import student_name_tag_window
 from . import device_tag_window
 from . import borrower_list_window
 from constant.global_info import *
+import webbrowser
 
 table_data = []
 filter_table_data = []
@@ -209,7 +210,7 @@ def show_device_list_window(user_auth):
     max_width = int(max_width * 0.8)
     max_height = int(max_height * 0.6)
     global window_all_devices
-    window_all_devices = sg.Window(title="CTS CMS :: device list",
+    window_all_devices = sg.Window(title="CTS CMS :: Device list",
                                    layout=layout_all_devices,
                                    size=(max_width, max_height),
                                    icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))),
@@ -226,6 +227,8 @@ def show_device_list_window(user_auth):
     while True:
         event, values = window_all_devices.read(timeout=100)
         run_pending()
+        if event == 'Documentation':
+            webbrowser.open_new_tab('https://casey-tech-school.gitbook.io/cts_cms/')
         if event == '-Thread-device-upload-':
             sg.popup_quick_message('Devices added successfully.', font=font_normal)
             result = sg.popup_ok_cancel('Do you want to generate device QR Code?',
