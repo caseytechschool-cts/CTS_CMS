@@ -226,6 +226,7 @@ def show_device_list_window(user_auth):
 
     while True:
         event, values = window_all_devices.read(timeout=100)
+        # print(event)
         run_pending()
         if event == 'Documentation':
             webbrowser.open_new_tab('https://casey-tech-school.gitbook.io/cts_cms/')
@@ -251,6 +252,11 @@ def show_device_list_window(user_auth):
                 icon=image_to_base64(resource_path(path.join('assets', 'logo.png'))))
             if result == 'OK':
                 remove_device_from_database(selected_device[0], idToken)
+                window_all_devices['-modify-device-button-'].update(visible=False)
+                window_all_devices['-faulty-report-device-button-'].update(visible=False)
+                window_all_devices['-delete-device-button-'].update(visible=False)
+                window_all_devices['-fault-details-'].update(visible=False)
+                window_all_devices['-mark-as-resolved-'].update(visible=False)
         if event == '-download-device-list-':
             file_id = str(uuid.uuid4())
             if '-download-all-' in values[event]:
@@ -271,7 +277,7 @@ def show_device_list_window(user_auth):
             else:
                 selected_device = filter_table_data[values['-all-devices-'][0]]
             if selected_device:
-                print(selected_device)
+                # print(selected_device)
                 window_all_devices['-modify-device-button-'].update(visible=selected_device[3] == 'false')
                 window_all_devices['-faulty-report-device-button-'].update(visible=selected_device[3] == 'false')
                 window_all_devices['-delete-device-button-'].update(visible=selected_device[3] == 'false')
@@ -279,16 +285,36 @@ def show_device_list_window(user_auth):
                 window_all_devices['-mark-as-resolved-'].update(visible=not selected_device[3] == 'false')
         if event == '-modify-device-button-':
             modify_device(selected_device, idToken)
+            window_all_devices['-modify-device-button-'].update(visible=False)
+            window_all_devices['-faulty-report-device-button-'].update(visible=False)
+            window_all_devices['-delete-device-button-'].update(visible=False)
+            window_all_devices['-fault-details-'].update(visible=False)
+            window_all_devices['-mark-as-resolved-'].update(visible=False)
         if event == '-faulty-report-device-button-':
             report_device(selected_device, idToken)
+            window_all_devices['-modify-device-button-'].update(visible=False)
+            window_all_devices['-faulty-report-device-button-'].update(visible=False)
+            window_all_devices['-delete-device-button-'].update(visible=False)
+            window_all_devices['-fault-details-'].update(visible=False)
+            window_all_devices['-mark-as-resolved-'].update(visible=False)
         if event == '-fault-details-':
             fault_details(selected_device[0], idToken)
+            window_all_devices['-modify-device-button-'].update(visible=False)
+            window_all_devices['-faulty-report-device-button-'].update(visible=False)
+            window_all_devices['-delete-device-button-'].update(visible=False)
+            window_all_devices['-fault-details-'].update(visible=False)
+            window_all_devices['-mark-as-resolved-'].update(visible=False)
         if event == '-mark-as-resolved-':
             db.child('devices').child(selected_device[0]).update(data={'isFaulty': 'false'}, token=idToken)
             db.child('faulty_devices').child(selected_device[0]).remove(token=idToken)
             storage.delete(name=f"{selected_device[0]}.png", token=idToken)
             if path.exists(path.join(user_data_location, 'download.png')):
                 os.remove(path.join(user_data_location, 'download.png'))
+            window_all_devices['-modify-device-button-'].update(visible=False)
+            window_all_devices['-faulty-report-device-button-'].update(visible=False)
+            window_all_devices['-delete-device-button-'].update(visible=False)
+            window_all_devices['-fault-details-'].update(visible=False)
+            window_all_devices['-mark-as-resolved-'].update(visible=False)
         if event == '-filter-submit-button-' or event == '-filter-query-' + '_Enter':
             query = values['-filter-query-']
             if len(query):

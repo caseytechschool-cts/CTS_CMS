@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b02ec80b-0de1-42cd-aef8-70d7a3e824cf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant/global_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/constant/global_info.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/device_modifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_modifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/device_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_tag_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/login_screen_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/login_screen_layout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/device_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/device_report.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/show_device_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/show_device_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/student_name_tag_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_name_tag_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

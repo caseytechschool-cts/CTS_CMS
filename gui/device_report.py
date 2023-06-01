@@ -32,7 +32,7 @@ def thread_device_report(description, selected_device, idToken, fpath, window):
 def thread_email(to, fpath, description, device_details):
     outlook = win32.Dispatch('outlook.application')
     mail = outlook.CreateItem(0)
-    mail.Subject = '[Action required] Faulty device report'
+    mail.Subject = '[Action required] Faulty device'
     mail.To = to
     attachment = mail.Attachments.Add(fpath)
     attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "device_img")
@@ -41,6 +41,7 @@ def thread_email(to, fpath, description, device_details):
     device_type = device_details[1]
     device_sub_type = device_details[2]
     device_location = device_details[4]
+    device_purpose = device_details[6]
     mail.HTMLBody = r"""
     Dear Admin,<br><br>
     The following information is added to the faulty device list.<br><br>
@@ -52,10 +53,11 @@ def thread_email(to, fpath, description, device_details):
     Device name: {2} <br>
     Device type: {3} <br>
     Device sub type: {4} <br>
-    Device location: {5} <br><br>
+    Device location: {5} <br>
+    Purpose: {6} <br><br>
     Regards,<br>
     CTS CMS Team
-    """.format(description, device_id, device_name, device_type, device_sub_type, device_location)
+    """.format(description, device_id, device_name, device_type, device_sub_type, device_location, device_purpose)
     mail.Display()
 
 

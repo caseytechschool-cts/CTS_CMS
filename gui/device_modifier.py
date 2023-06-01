@@ -15,6 +15,8 @@ def modify_device(selected_device, idToken):
                                                                       font=font_normal)],
               [sg.Text('Device location', font=font_normal), sg.Input(key='-LOCATION-', default_text=selected_device[4],
                                                                       font=font_normal)],
+              [sg.Text('Purpose', font=font_normal), sg.Input(key='-PURPOSE-', default_text=selected_device[6],
+                                                                      font=font_normal)],
               [sg.Button(button_color='#2db52c', button_text='Submit', font=font_normal,
                          size=(len('Submit')+5, 1)), sg.Cancel(font=font_normal, size=(len('Cancel')+5, 1))]]
 
@@ -31,7 +33,8 @@ def modify_device(selected_device, idToken):
                 "name": values['-NAME-'],
                 "device_type": values['-TYPE-'],
                 "device_sub_type": values['-SUB-TYPE-'],
-                "location": values['-LOCATION-']
+                "location": values['-LOCATION-'],
+                "purpose": values['-PURPOSE-']
             }
             db.child('devices').child(selected_device[0]).update(data=device_data, token=idToken)
             sg.popup_quick_message('Device updated successfully!', auto_close_duration=1)
