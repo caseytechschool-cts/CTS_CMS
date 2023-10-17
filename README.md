@@ -6,6 +6,8 @@ Welcome to CTS CMS – Your Ultimate Resource Management Solution!
 
 Are you looking for a robust, efficient, and user-friendly resource management software? Look no further! Our software is designed to streamline resource management for educational institutions, making the process smoother for administrators and students alike.
 
+![screenshot](FsKV2XcosA.png)
+
 **Key Features:**
 
 **Desktop Application for Admin and Staff:**
