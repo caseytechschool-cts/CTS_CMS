@@ -161,12 +161,12 @@ col_map = [False, True, True, True, True, True, True]
 user = None
 
 
-@repeat(every(1).hour)
-def refresh_token(user_auth):
-    global user
-    user = auth.refresh(user_auth['refreshToken'])
-    with open(os.path.join(user_data_location, "auth.json"), "w") as outfile:
-        json.dump(user, outfile)
+# @repeat(every(1).hour)
+# def refresh_token(user_auth):
+#     global user
+#     user = auth.refresh(user_auth['refreshToken'])
+#     with open(os.path.join(user_data_location, "auth.json"), "w") as outfile:
+#         json.dump(user, outfile)
 
 
 def show_device_list_window(user_auth):
@@ -227,7 +227,7 @@ def show_device_list_window(user_auth):
     while True:
         event, values = window_all_devices.read(timeout=100)
         # print(event)
-        run_pending()
+        # run_pending()
         if event == 'Documentation':
             webbrowser.open_new_tab('https://casey-tech-school.gitbook.io/cts_cms/')
         if event == '-Thread-device-upload-':
