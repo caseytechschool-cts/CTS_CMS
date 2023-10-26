@@ -8,3 +8,4 @@ dist
 build
 *.spec
 output
+.idea
