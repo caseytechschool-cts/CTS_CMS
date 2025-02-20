@@ -22,8 +22,8 @@ def nametag_image(csv_file, destination_folder, show_qr_code, show_box):
             if line_count:
                 img = Image.new('RGBA', (360, 130), color=(255, 255, 255, 0))
                 name_font = ImageFont.truetype("arial.ttf", 20)
-                first_name = row[1][0:14]
-                last_name = row[2][0:14]
+                first_name = row[0][0:14]
+                last_name = row[1][0:14]
                 draw = ImageDraw.Draw(img)
                 if not show_qr_code and not show_box:
                     draw.text((20, 40), first_name, font=name_font, fill=(0, 0, 0))
